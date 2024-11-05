@@ -1,11 +1,8 @@
 <script>
-    import { base } from "$app/paths";
-
     import P5 from "p5-svelte";
     import { get } from "svelte/store";
-    import { colorMap } from "$lib/constants.js";
+    import { base } from "$app/paths";
     import { markEntityLoopComplete } from "$lib/loopStatus";
-
     import {
         data,
         entities,
@@ -23,6 +20,7 @@
         fontLoaded,
         stationaryCounts,
     } from "$lib/stores.js";
+    import { colorMap } from "$lib/constants.js";
 
     let font;
 
@@ -49,6 +47,7 @@
             s.createCanvas(get(width), get(height));
             s.colorMode(s.HSL);
             s.background(0);
+            s.frameRate(60);
 
             if (get(data).length > 0) {
                 processClusters();
@@ -59,28 +58,94 @@
         s.draw = () => {
             s.background(0, 0.1);
 
+            const entitiesData = get(entities);
+            const highlightedEntitiesData = get(highlightedEntities);
+            const clustersData = get(clusters);
+            const clusterPositionsData = get(clusterPositions);
+            const curvesData = get(curves);
+            const configData = get(config);
+            const strokeWeightValue = configData.stroke || get(stroke);
+            const fontLoadedData = get(fontLoaded);
+            const speedValue = configData.speed || get(speed);
+            const stationaryCountsData = get(stationaryCounts);
+            const randomizeClustersData = get(randomizeClusters);
+
             if (get(process)) {
                 processClusters();
                 updateEntityPositions();
                 process.set(false);
             }
 
-            drawStationaryEntityLoops(s);
+            drawStationaryEntityLoops(
+                s,
+                entitiesData,
+                stationaryCountsData,
+                clusterPositionsData,
+                highlightedEntitiesData,
+                configData,
+                strokeWeightValue,
+                speedValue,
+            );
 
-            Object.values(get(entities)).forEach((entity) => {
-                const isHighlighted = get(highlightedEntities).includes(
-                    entity.moveBy,
-                );
-                processAndDrawEntity(
-                    s,
-                    entity,
-                    isHighlighted,
-                    $config.stroke || get(stroke),
-                );
+            const entitiesByStyle = {
+                highlighted: [],
+                normal: [],
+            };
+
+            Object.values(entitiesData).forEach((entity) => {
+                if (entity.isStationary) return;
+
+                const isHighlighted =
+                    highlightedEntitiesData.length === 0 ||
+                    highlightedEntitiesData.includes(entity.moveBy);
+
+                if (isHighlighted) {
+                    entitiesByStyle.highlighted.push(entity);
+                } else {
+                    entitiesByStyle.normal.push(entity);
+                }
             });
 
-            if (get(fontLoaded)) {
-                drawClusterLabels(s);
+            if (entitiesByStyle.highlighted.length > 0) {
+                entitiesByStyle.highlighted.forEach((entity) => {
+                    processAndDrawEntity(
+                        s,
+                        entity,
+                        true,
+                        clusterPositionsData,
+                        curvesData,
+                        speedValue,
+                        strokeWeightValue,
+                        configData,
+                        highlightedEntitiesData,
+                    );
+                });
+            }
+
+            if (entitiesByStyle.normal.length > 0) {
+                entitiesByStyle.normal.forEach((entity) => {
+                    processAndDrawEntity(
+                        s,
+                        entity,
+                        false,
+                        clusterPositionsData,
+                        curvesData,
+                        speedValue,
+                        strokeWeightValue,
+                        configData,
+                        highlightedEntitiesData,
+                    );
+                });
+            }
+
+            if (fontLoadedData) {
+                drawClusterLabels(
+                    s,
+                    clustersData,
+                    clusterPositionsData,
+                    configData,
+                    randomizeClustersData,
+                );
             }
         };
 
@@ -88,7 +153,7 @@
             width.set(window.innerWidth);
             height.set(window.innerHeight - 200);
             s.resizeCanvas(get(width), get(height));
-            s.background(get(width), get(height));
+            s.background(0);
 
             updateEntityPositions();
         };
@@ -192,13 +257,33 @@
         s,
         entityData,
         isHighlighted,
+        clusterPositionsData,
+        curvesData,
+        speedValue,
         strokeWeightValue,
+        configData,
+        highlightedEntitiesData,
     ) {
         if (entityData.isStationary) {
             return;
         }
 
-        const { categories, currentCategoryIndex, position } = entityData;
+        const isEntityHighlighted =
+            highlightedEntitiesData.length === 0 || isHighlighted;
+
+        const strokeColor =
+            isEntityHighlighted && colorMap[configData.clusterBy]
+                ? colorMap[configData.clusterBy]?.start
+                : [0, 0, 20];
+
+        s.stroke(...strokeColor);
+        s.strokeWeight(isEntityHighlighted ? strokeWeightValue : 1);
+        s.noFill();
+        s.strokeJoin(s.ROUND);
+
+        const categories = entityData.categories;
+        const currentIndex = entityData.currentCategoryIndex;
+        const position = entityData.position;
         let t = entityData.t || 0;
 
         const minSegmentLength = 1;
@@ -207,97 +292,106 @@
         if (!entityData.trail) entityData.trail = [];
 
         if (categories.length > 0) {
-            const startPos =
-                get(clusterPositions)[
-                    categories[currentCategoryIndex % categories.length]
-                ];
-            const endPos =
-                get(clusterPositions)[
-                    categories[(currentCategoryIndex + 1) % categories.length]
-                ];
+            const startClusterKey =
+                categories[currentIndex % categories.length];
+            const endClusterKey =
+                categories[(currentIndex + 1) % categories.length];
+
+            const startPos = clusterPositionsData[startClusterKey];
+            const endPos = clusterPositionsData[endClusterKey];
 
             if (startPos && endPos) {
-                const controlPoint1 = {
-                    x: startPos.x - 25,
-                    y: startPos.y - 25,
-                };
-                const controlPoint2 = {
-                    x: endPos.x + 25,
-                    y: endPos.y + 25,
-                };
+                let currentPosition = { x: 0, y: 0 };
 
-                if (get(curves)) {
-                    position.x = s.bezierPoint(
-                        startPos.x,
-                        controlPoint1.x - 50,
-                        controlPoint2.x - 50,
-                        endPos.x,
-                        t,
-                    );
-                    position.y = s.bezierPoint(
-                        startPos.y,
-                        controlPoint1.y + 50,
-                        controlPoint2.y + 50,
-                        endPos.y,
-                        t,
-                    );
+                if (startClusterKey === endClusterKey) {
+                    const offsetRadius = 5;
+                    const angle = s.TWO_PI * t;
+                    currentPosition.x =
+                        startPos.x + offsetRadius * s.cos(angle);
+                    currentPosition.y =
+                        startPos.y + offsetRadius * s.sin(angle);
                 } else {
-                    position.x = s.lerp(startPos.x, endPos.x, t);
-                    position.y = s.lerp(startPos.y, endPos.y, t);
-                }
+                    if (curvesData) {
+                        const control1X =
+                            startPos.x + (endPos.x - startPos.x) / 2;
+                        const control1Y = startPos.y;
+                        const control2X = endPos.x;
+                        const control2Y =
+                            startPos.y + (endPos.y - startPos.y) / 2;
 
-                const lastPoint = entityData.trail[entityData.trail.length - 1];
-                if (
-                    !lastPoint ||
-                    dist(lastPoint, position) >= minSegmentLength
-                ) {
-                    entityData.trail.push({ ...position });
-                    if (entityData.trail.length > maxTrailSegments) {
-                        entityData.trail.shift();
+                        currentPosition.x = s.bezierPoint(
+                            startPos.x,
+                            control1X,
+                            control2X,
+                            endPos.x,
+                            t,
+                        );
+                        currentPosition.y = s.bezierPoint(
+                            startPos.y,
+                            control1Y,
+                            control2Y,
+                            endPos.y,
+                            t,
+                        );
+                    } else {
+                        currentPosition.x = s.lerp(startPos.x, endPos.x, t);
+                        currentPosition.y = s.lerp(startPos.y, endPos.y, t);
                     }
                 }
 
-                const speedFactor =
-                    0.003 * get(config).speed || 0.003 * get(speed);
+                const trail = entityData.trail;
+                const lastPoint = trail[trail.length - 1];
+                if (
+                    !lastPoint ||
+                    distSquared(lastPoint, currentPosition) >=
+                        minSegmentLength * minSegmentLength
+                ) {
+                    if (trail.length >= maxTrailSegments) {
+                        trail.shift();
+                    }
+                    trail.push({ x: currentPosition.x, y: currentPosition.y });
+                }
+
+                const speedFactor = 0.004 * speedValue;
                 t += speedFactor;
                 if (t > 1) {
                     t = 0;
-                    entityData.currentCategoryIndex++;
-                    if (entityData.currentCategoryIndex >= categories.length) {
-                        entityData.currentCategoryIndex = 0;
-                        if (isHighlighted) {
-                            markEntityLoopComplete(entityData.moveBy);
-                        }
+                    entityData.currentCategoryIndex =
+                        (currentIndex + 1) % categories.length;
+                    if (
+                        entityData.currentCategoryIndex === 0 &&
+                        isHighlighted
+                    ) {
+                        markEntityLoopComplete(entityData.moveBy);
                     }
                 }
 
                 entityData.t = t;
-
-                const strokeColor =
-                    get(highlightedEntities).length === 0 || isHighlighted
-                        ? colorMap[get(config).clusterBy].start
-                        : [0, 0, 40];
-
-                s.noFill();
-                s.stroke(...strokeColor);
-                s.strokeWeight(
-                    get(highlightedEntities).length === 0 || isHighlighted
-                        ? strokeWeightValue
-                        : 1,
-                );
-                s.strokeJoin(s.ROUND);
+                position.x = currentPosition.x;
+                position.y = currentPosition.y;
 
                 s.beginShape();
-                entityData.trail.forEach((point) => s.vertex(point.x, point.y));
+                for (let i = 0; i < trail.length; i++) {
+                    const point = trail[i];
+                    s.vertex(point.x, point.y);
+                }
                 s.endShape();
             }
         }
     }
 
-    function drawStationaryEntityLoops(s) {
-        const counts = get(stationaryCounts);
-        const clusterPos = get(clusterPositions);
-        const speedFactor = 0.003 * get(config).speed || 0.003 * get(speed);
+    function drawStationaryEntityLoops(
+        s,
+        entitiesData,
+        stationaryCountsData,
+        clusterPositionsData,
+        highlightedEntitiesData,
+        configData,
+        strokeWeightValue,
+        speedValue,
+    ) {
+        const counts = stationaryCountsData;
+        const speedFactor = 0.004 * speedValue;
 
         if (!drawStationaryEntityLoops.trails) {
             drawStationaryEntityLoops.trails = {};
@@ -306,7 +400,7 @@
 
         Object.keys(counts).forEach((clusterKey) => {
             const count = counts[clusterKey];
-            const pos = clusterPos[clusterKey];
+            const pos = clusterPositionsData[clusterKey];
 
             if (pos) {
                 const trailLength = 4;
@@ -336,18 +430,19 @@
                     clusterTrail.trail[clusterTrail.trail.length - 1];
                 if (
                     !lastPoint ||
-                    dist(lastPoint, position) >= minSegmentLength
+                    distSquared(lastPoint, position) >=
+                        minSegmentLength * minSegmentLength
                 ) {
-                    clusterTrail.trail.push(position);
-                    if (clusterTrail.trail.length > trailLength) {
+                    if (clusterTrail.trail.length >= trailLength) {
                         clusterTrail.trail.shift();
                     }
+                    clusterTrail.trail.push(position);
                 }
 
                 const isClusterHighlighted =
-                    get(highlightedEntities).length === 0 ||
-                    get(highlightedEntities).some((entityName) => {
-                        const entity = get(entities)[entityName];
+                    highlightedEntitiesData.length === 0 ||
+                    highlightedEntitiesData.some((entityName) => {
+                        const entity = entitiesData[entityName];
                         return (
                             entity &&
                             entity.categories.includes(clusterKey) &&
@@ -356,16 +451,13 @@
                     });
 
                 const strokeColor =
-                    isClusterHighlighted && colorMap[get(config).clusterBy]
-                        ? colorMap[get(config).clusterBy]?.start
+                    isClusterHighlighted && colorMap[configData.clusterBy]
+                        ? colorMap[configData.clusterBy]?.start
                         : [0, 0, 40];
 
                 s.noFill();
                 s.stroke(...strokeColor);
-
-                s.strokeWeight(
-                    isClusterHighlighted ? $config.stroke || get(stroke) : 1,
-                );
+                s.strokeWeight(isClusterHighlighted ? strokeWeightValue : 1);
                 s.strokeJoin(s.ROUND);
 
                 s.beginShape();
@@ -377,22 +469,28 @@
         });
     }
 
-    function dist(point1, point2) {
-        return Math.sqrt(
-            Math.pow(point1.x - point2.x, 2) + Math.pow(point1.y - point2.y, 2),
-        );
+    function distSquared(point1, point2) {
+        const dx = point1.x - point2.x;
+        const dy = point1.y - point2.y;
+        return dx * dx + dy * dy;
     }
 
-    function drawClusterLabels(s) {
-        s.fill(...(colorMap[get(config).clusterBy]?.start || [0, 0, 40]));
+    function drawClusterLabels(
+        s,
+        clustersData,
+        clusterPositionsData,
+        configData,
+        randomizeClustersData,
+    ) {
+        s.fill(...(colorMap[configData.clusterBy]?.start || [0, 0, 40]));
         s.noStroke();
         s.textFont(font);
 
-        get(clusters).forEach(([clusterKey]) => {
-            const pos = get(clusterPositions)[clusterKey];
+        clustersData.forEach(([clusterKey]) => {
+            const pos = clusterPositionsData[clusterKey];
             if (pos) {
                 s.push();
-                if (get(randomizeClusters)) {
+                if (randomizeClustersData) {
                     s.translate(pos.x, pos.y);
                 } else {
                     let angle = Math.atan2(

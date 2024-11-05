@@ -143,6 +143,7 @@
             bind:value={$config.queryValue}
         />
         <div class="options tiny">
+            len: {Object.keys(filteredEntities).length}
             {#each Object.keys(filteredEntities).slice(0, 50).sort() as entity}
                 <span
                     class:highlighted={$highlightedEntities.includes(entity)}
