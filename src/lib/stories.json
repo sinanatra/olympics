@@ -1,5 +1,18 @@
 [
     {
+        "title": "All-or-Nothing Sports",
+        "description": "Curling is a sport that demands dedication, with most athletes specializing exclusively in it. However, Georges Jules Andr, a French athlete, broke the mold by competing in both Curling and Bobsleigh. Andr's unique dual participation at the 1924 Winter Olympics in Chamonix, where he won a bronze medal in Men's Curling and also competed in the Men's Four/Five Bobsleigh event, makes his story stand out. His Olympic journey showcases the exceptional versatility of athletes who defy specialization, excelling in two contrasting winter sports.",
+        "methodology": "Clusters represent sports, highlighting athletes who specialize in Curling and rarely change discipline.",
+        "config": {
+            "clusterBy": "sport",
+            "moveBy": "name",
+            "queryValue": "curling",
+            "queryCategory": "sport",
+            "speed": 3,
+            "stroke": 12
+        }
+    },
+    {
         "title": "Alberto Tomba's Journey",
         "description": "Alberto Tomba, also known as 'La Bomba,' is one of the most celebrated Italian skiers of all time. Known for his charisma and flair, Tomba dominated the slalom and giant slalom events in the late 1980s and early 1990s. He burst onto the scene with his gold medal victories at the 1988 Calgary Winter Olympics, and his continued success in subsequent years solidified his status as a skiing legend. This story traces his Olympic journey, highlighting his growth and achievements across multiple events and years, as he repeatedly brought glory to Italy and captivated fans worldwide with his thrilling performances.",
         "methodology": "Clusters represent different years, showing Alberto Tomba’s progression across Olympic events over time.",
@@ -10,6 +23,19 @@
             "queryCategory": "name",
             "speed": 3,
             "stroke": 20
+        }
+    },
+    {
+        "title": "Skiing Across Countries",
+        "description": "Skiing is a sport that transcends borders, and skiing athletes bring their talents to slopes all over the world. This story explores the global journey of skiing, focusing on how athletes have traveled far and wide to represent their countries. The clusters in this story reflect the cities where skiing events have been held, capturing the unique cultural and geographic diversity of the sport. From the Alps to the Rockies, skiing has fostered a shared bond among athletes and fans across continents, uniting people through the thrill of competition and the beauty of snowy landscapes.",
+        "methodology": "Clusters represent cities, with movements showing skiing events across various locations.",
+        "config": {
+            "clusterBy": "city",
+            "moveBy": "sport",
+            "queryValue": "skiing",
+            "queryCategory": "sport",
+            "speed": 10,
+            "stroke": 5
         }
     },
     {
@@ -75,32 +101,6 @@
             "queryCategory": "name",
             "speed": 3,
             "stroke": 6
-        }
-    },
-    {
-        "title": "All-or-Nothing Sports",
-        "description": "Curling is a sport that demands dedication, with most athletes specializing exclusively in it. However, Georges Jules Andr, a French athlete, broke the mold by competing in both Curling and Bobsleigh. Andr's unique dual participation at the 1924 Winter Olympics in Chamonix, where he won a bronze medal in Men's Curling and also competed in the Men's Four/Five Bobsleigh event, makes his story stand out. His Olympic journey showcases the exceptional versatility of athletes who defy specialization, excelling in two contrasting winter sports.",
-        "methodology": "Clusters represent sports, highlighting athletes who specialize, with exceptions like Georges Jules Andr in multiple events.",
-        "config": {
-            "clusterBy": "sport",
-            "moveBy": "name",
-            "queryValue": "curling",
-            "queryCategory": "sport",
-            "speed": 3,
-            "stroke": 12
-        }
-    },
-    {
-        "title": "Skiing Across Countries",
-        "description": "Skiing is a sport that transcends borders, and skiing athletes bring their talents to slopes all over the world. This story explores the global journey of skiing, focusing on how athletes have traveled far and wide to represent their countries. The clusters in this story reflect the cities where skiing events have been held, capturing the unique cultural and geographic diversity of the sport. From the Alps to the Rockies, skiing has fostered a shared bond among athletes and fans across continents, uniting people through the thrill of competition and the beauty of snowy landscapes.",
-        "methodology": "Clusters represent cities, with movements showing skiing events across various locations.",
-        "config": {
-            "clusterBy": "city",
-            "moveBy": "sport",
-            "queryValue": "skiing",
-            "queryCategory": "sport",
-            "speed": 10,
-            "stroke": 5
         }
     }
 ]
