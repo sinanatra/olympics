@@ -1,4 +1,6 @@
 <script>
+    import { base } from "$app/paths";
+
     import { onMount } from "svelte";
     import { data, width, height } from "$lib/stores.js";
     import Sketch from "$lib/components/Sketch.svelte";
@@ -8,7 +10,7 @@
 
     onMount(async () => {
         const loadedData = await tsv(
-            "/data/update-until-2022/until2022-all-winter-olympia.tsv",
+            base + "/data/update-until-2022/until2022-all-winter-olympia.tsv",
         );
         data.set(loadedData);
 

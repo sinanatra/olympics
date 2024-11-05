@@ -1,4 +1,6 @@
 <script>
+    import { base } from "$app/paths";
+
     import P5 from "p5-svelte";
     import { get } from "svelte/store";
     import { colorMap } from "$lib/constants.js";
@@ -38,7 +40,7 @@
 
     const sketch = (s) => {
         s.preload = () => {
-            font = s.loadFont("/font/CircularStd-Book.otf", () => {
+            font = s.loadFont(base + "/font/CircularStd-Book.otf", () => {
                 fontLoaded.set(true);
             });
         };

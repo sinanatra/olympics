@@ -1,6 +1,10 @@
+<script>
+    import { base } from "$app/paths";
+</script>
+
 <main>
-    <a href="/stories">Stories</a>
-    <a href="/search">Search</a>
+    <a href="{base}/stories">Stories</a>
+    <a href="{base}/search">Search</a>
 </main>
 
 <style>
