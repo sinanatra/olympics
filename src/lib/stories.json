@@ -1,18 +1,5 @@
 [
     {
-        "title": "Skiing Across Countries",
-        "description": "Skiing is a sport that transcends borders, and skiing athletes bring their talents to slopes all over the world. This story explores the global journey of skiing, focusing on how athletes have traveled far and wide to represent their countries. The clusters in this story reflect the cities where skiing events have been held, capturing the unique cultural and geographic diversity of the sport. From the Alps to the Rockies, skiing has fostered a shared bond among athletes and fans across continents, uniting people through the thrill of competition and the beauty of snowy landscapes.",
-        "methodology": "Clusters represent cities, with movements showing skiing events across various locations.",
-        "config": {
-            "clusterBy": "city",
-            "moveBy": "sport",
-            "queryValue": "skiing",
-            "queryCategory": "sport",
-            "speed": 10,
-            "stroke": 5
-        }
-    },
-    {
         "title": "Alberto Tomba's Journey",
         "description": "Alberto Tomba, also known as 'La Bomba,' is one of the most celebrated Italian skiers of all time. Known for his charisma and flair, Tomba dominated the slalom and giant slalom events in the late 1980s and early 1990s. He burst onto the scene with his gold medal victories at the 1988 Calgary Winter Olympics, and his continued success in subsequent years solidified his status as a skiing legend. This story traces his Olympic journey, highlighting his growth and achievements across multiple events and years, as he repeatedly brought glory to Italy and captivated fans worldwide with his thrilling performances.",
         "methodology": "Clusters represent different years, showing Alberto Tomba’s progression across Olympic events over time.",
@@ -23,6 +10,32 @@
             "queryCategory": "name",
             "speed": 3,
             "stroke": 20
+        }
+    },
+    {
+        "title": "A Sport for a Lifetime",
+        "description": "Ivano Zanatta exemplifies lifelong dedication to sports, having first competed at the age of 31. Decades later, Zanatta continued his involvement in ice hockey, contributing not only as an athlete but also in coaching and mentoring roles. His enduring presence in the Olympic community underscores a commitment that extends far beyond a single Olympic cycle. This story follows Zanatta's journey, marking the passage of time and the lasting influence of his contributions to the sport, illustrating how some athletes remain connected to their passion for a lifetime.",
+        "methodology": "Clusters represent ages, showing athletes like Ivano Zanatta who remained dedicated to their sport across decades.",
+        "config": {
+            "clusterBy": "age",
+            "moveBy": "name",
+            "queryValue": "Ivano Zanatta",
+            "queryCategory": "name",
+            "speed": 1,
+            "stroke": 15
+        }
+    },
+    {
+        "title": "A Lifetime of Dedication: Armin Zöggeler",
+        "description": "Armin Zöggeler is an Italian luger often celebrated as one of the sport’s greatest athletes. Over the course of his career, Zöggeler competed in six Winter Olympics from 1994 to 2014, winning two gold medals, one silver, and three bronze medals. His consistency and skill made him a legend, earning him the nickname 'The Cannibal' for his relentless pursuit of success. This story traces Zöggeler's multi-decade Olympic career, a testament to his dedication, resilience, and exceptional skill that spanned over 20 years at the top of his sport.",
+        "methodology": "Clusters represent years, highlighting Armin Zöggeler’s multi-decade dedication to Luge.",
+        "config": {
+            "clusterBy": "year",
+            "moveBy": "name",
+            "queryValue": "Armin Zggeler",
+            "queryCategory": "name",
+            "speed": 3,
+            "stroke": 18
         }
     },
     {
@@ -78,29 +91,16 @@
         }
     },
     {
-        "title": "A Sport for a Lifetime",
-        "description": "Ivano Zanatta exemplifies lifelong dedication to sports, having first competed at the age of 31. Decades later, Zanatta continued his involvement in ice hockey, contributing not only as an athlete but also in coaching and mentoring roles. His enduring presence in the Olympic community underscores a commitment that extends far beyond a single Olympic cycle. This story follows Zanatta's journey, marking the passage of time and the lasting influence of his contributions to the sport, illustrating how some athletes remain connected to their passion for a lifetime.",
-        "methodology": "Clusters represent ages, showing athletes like Ivano Zanatta who remained dedicated to their sport across decades.",
+        "title": "Skiing Across Countries",
+        "description": "Skiing is a sport that transcends borders, and skiing athletes bring their talents to slopes all over the world. This story explores the global journey of skiing, focusing on how athletes have traveled far and wide to represent their countries. The clusters in this story reflect the cities where skiing events have been held, capturing the unique cultural and geographic diversity of the sport. From the Alps to the Rockies, skiing has fostered a shared bond among athletes and fans across continents, uniting people through the thrill of competition and the beauty of snowy landscapes.",
+        "methodology": "Clusters represent cities, with movements showing skiing events across various locations.",
         "config": {
-            "clusterBy": "age",
-            "moveBy": "name",
-            "queryValue": "Ivano Zanatta",
-            "queryCategory": "name",
-            "speed": 1,
-            "stroke": 15
-        }
-    },
-    {
-        "title": "A Lifetime of Dedication: Armin Zöggeler",
-        "description": "Armin Zöggeler is an Italian luger often celebrated as one of the sport’s greatest athletes. Over the course of his career, Zöggeler competed in six Winter Olympics from 1994 to 2014, winning two gold medals, one silver, and three bronze medals. His consistency and skill made him a legend, earning him the nickname 'The Cannibal' for his relentless pursuit of success. This story traces Zöggeler's multi-decade Olympic career, a testament to his dedication, resilience, and exceptional skill that spanned over 20 years at the top of his sport.",
-        "methodology": "Clusters represent years, highlighting Armin Zöggeler’s multi-decade dedication to Luge.",
-        "config": {
-            "clusterBy": "year",
-            "moveBy": "name",
-            "queryValue": "Armin Zggeler",
-            "queryCategory": "name",
-            "speed": 3,
-            "stroke": 18
+            "clusterBy": "city",
+            "moveBy": "sport",
+            "queryValue": "skiing",
+            "queryCategory": "sport",
+            "speed": 10,
+            "stroke": 5
         }
     }
 ]
