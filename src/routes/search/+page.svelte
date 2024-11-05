@@ -2,16 +2,17 @@
     import { base } from "$app/paths";
 
     import { onMount } from "svelte";
-    import { data, width, height, config } from "$lib/stores.js";
+    import { data, width, height, config, stroke } from "$lib/stores.js";
     import Sketch from "$lib/components/Sketch.svelte";
     import ControlPanel from "$lib/components/ControlPanel.svelte";
     import { tsv } from "d3-fetch";
 
-    $config.clusterBy = "sport";
-    $config.moveBy = "name";
-    $config.speed = 5;
-    $config.stroke = 2;
-    $config.queryValue = ""
+    // $config.clusterBy = "age";
+    // $config.moveBy = "name";
+    // $config.speed = 5;
+    // $config.stroke = 5;
+    // $stroke = 1;
+    // $config.queryValue = ""
 
     onMount(async () => {
         const loadedData = await tsv(

@@ -2,7 +2,7 @@
     import { base } from "$app/paths";
 </script>
 
-<main>
+<main data-sveltekit-reload>
     <a href="{base}/stories">Stories</a>
     <a href="{base}/search">Search</a>
 </main>
