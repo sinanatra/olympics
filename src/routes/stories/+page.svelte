@@ -10,6 +10,12 @@
     import { loopStatusStore, resetLoopStatus } from "$lib/loopStatus";
     import stories from "$lib/stories.json";
 
+    // $config.clusterBy = "age";
+    // $config.moveBy = "name";
+    // $config.speed = 3;
+    // $config.stroke = 2;
+    // $config.queryValue = "";
+
     let currentStoryIndex = -1;
     let currentStory = stories[currentStoryIndex];
 
