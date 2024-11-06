@@ -321,15 +321,15 @@
 
                         currentPosition.x = s.bezierPoint(
                             startPos.x,
-                            control1X,
-                            control2X,
+                            control1X - 50,
+                            control2X - 50,
                             endPos.x,
                             t,
                         );
                         currentPosition.y = s.bezierPoint(
                             startPos.y,
-                            control1Y,
-                            control2Y,
+                            control1Y + 50,
+                            control2Y + 50,
                             endPos.y,
                             t,
                         );
@@ -421,7 +421,7 @@
                 }
 
                 const angle = clusterTrail.t * s.TWO_PI;
-                const radius = 5 + Math.sqrt(count);
+                const radius = 2 + Math.sqrt(count);
                 const x = pos.x + radius * s.cos(angle);
                 const y = pos.y + radius * s.sin(angle);
                 const position = { x, y };
