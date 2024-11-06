@@ -207,7 +207,7 @@
                 bind:value={$config.queryValue}
             />
             <div class="options tiny">
-                len: {entitiesList.length}
+                <!-- len: {entitiesList.length} -->
                 {#each entitiesList
                     .slice(0, 50)
                     .sort( ([aName], [bName]) => aName.localeCompare(bName), ) as [entity, value]}
@@ -221,6 +221,11 @@
                         {entity}
                     </span>
                 {/each}
+                {#if entitiesList.length > 50}
+                    <p style="border-top: 1px solid;padding-top:10px">
+                        50 out of {entitiesList.length}
+                    </p>
+                {/if}
             </div>
         </div>
     </div>
@@ -238,7 +243,7 @@
         padding: 10px;
         font-size: 20px;
     }
-    header >  .categories {
+    header > .categories {
         display: flex;
         align-items: flex-start;
         justify-content: center;
