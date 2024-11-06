@@ -9,7 +9,8 @@
             "queryValue": "curling",
             "queryCategory": "sport",
             "speed": 3,
-            "stroke": 12
+            "stroke": 12,
+            "loops": 10
         }
     },
     {
@@ -22,7 +23,8 @@
             "queryValue": "alberto tomba",
             "queryCategory": "name",
             "speed": 3,
-            "stroke": 20
+            "stroke": 20,
+            "loops": 3
         }
     },
     {
@@ -35,7 +37,8 @@
             "queryValue": "skiing",
             "queryCategory": "sport",
             "speed": 10,
-            "stroke": 5
+            "stroke": 5,
+            "loops": 3
         }
     },
     {
@@ -48,7 +51,8 @@
             "queryValue": "Ivano Zanatta",
             "queryCategory": "name",
             "speed": 1,
-            "stroke": 15
+            "stroke": 15,
+            "loops": 3
         }
     },
     {
@@ -61,7 +65,8 @@
             "queryValue": "Armin Zggeler",
             "queryCategory": "name",
             "speed": 3,
-            "stroke": 18
+            "stroke": 18,
+            "loops": 3
         }
     },
     {
@@ -74,7 +79,8 @@
             "queryValue": "Irina Kostadinova Nikulchina",
             "queryCategory": "name",
             "speed": 3,
-            "stroke": 8
+            "stroke": 8,
+            "loops": 3
         }
     },
     {
@@ -87,7 +93,8 @@
             "queryValue": "Mari Laukkanen",
             "queryCategory": "name",
             "speed": 3,
-            "stroke": 20
+            "stroke": 20,
+            "loops": 3
         }
     },
     {
@@ -100,7 +107,8 @@
             "queryValue": "colin victor coates",
             "queryCategory": "name",
             "speed": 3,
-            "stroke": 6
+            "stroke": 6,
+            "loops": 3
         }
     }
 ]

@@ -162,10 +162,11 @@
     function processClusters() {
         const clusterMap = new Map();
         const tempEntities = {};
+        const configData = get(config);
 
         get(data).forEach((d) => {
-            const entityName = d[get(config).moveBy];
-            const clusterKey = d[get(config).clusterBy];
+            const entityName = d[configData.moveBy];
+            const clusterKey = d[configData.clusterBy];
 
             if (!tempEntities[entityName]) {
                 tempEntities[entityName] = {
@@ -177,6 +178,8 @@
                     t: 0,
                     isStationary: true,
                     trail: [],
+                    loopsCompleted: 0,
+                    loopsToComplete: configData.loops || 1,
                 };
             }
 
@@ -303,41 +306,43 @@
             if (startPos && endPos) {
                 let currentPosition = { x: 0, y: 0 };
 
-                if (startClusterKey === endClusterKey) {
-                    const offsetRadius = 5;
-                    const angle = s.TWO_PI * t;
-                    currentPosition.x =
-                        startPos.x + offsetRadius * s.cos(angle);
-                    currentPosition.y =
-                        startPos.y + offsetRadius * s.sin(angle);
-                } else {
-                    if (curvesData) {
-                        const control1X =
-                            startPos.x + (endPos.x - startPos.x) / 2;
-                        const control1Y = startPos.y;
-                        const control2X = endPos.x;
-                        const control2Y =
-                            startPos.y + (endPos.y - startPos.y) / 2;
+                // if (startClusterKey === endClusterKey) {
+                //     const offsetRadius = 5;
+                //     const angle = s.TWO_PI * t;
+                //     currentPosition.x =
+                //         startPos.x + offsetRadius * s.cos(angle);
+                //     currentPosition.y =
+                //         startPos.y + offsetRadius * s.sin(angle);
+                // } else {
+                const angle = s.TWO_PI * t;
+                if (curvesData) {
+                    const offset = 50; //* s.cos(angle);
+                    const control1X =
+                        startPos.x + (endPos.x - startPos.x) / 2 - offset;
+                    const control1Y = startPos.y + offset;
+                    const control2X = endPos.x + offset;
+                    const control2Y =
+                        startPos.y + (endPos.y - startPos.y) / 2 - offset;
 
-                        currentPosition.x = s.bezierPoint(
-                            startPos.x,
-                            control1X - 50,
-                            control2X - 50,
-                            endPos.x,
-                            t,
-                        );
-                        currentPosition.y = s.bezierPoint(
-                            startPos.y,
-                            control1Y + 50,
-                            control2Y + 50,
-                            endPos.y,
-                            t,
-                        );
-                    } else {
-                        currentPosition.x = s.lerp(startPos.x, endPos.x, t);
-                        currentPosition.y = s.lerp(startPos.y, endPos.y, t);
-                    }
+                    currentPosition.x = s.bezierPoint(
+                        startPos.x,
+                        control1X,
+                        control2X,
+                        endPos.x,
+                        t,
+                    );
+                    currentPosition.y = s.bezierPoint(
+                        startPos.y,
+                        control1Y,
+                        control2Y,
+                        endPos.y,
+                        t,
+                    );
+                } else {
+                    currentPosition.x = s.lerp(startPos.x, endPos.x, t);
+                    currentPosition.y = s.lerp(startPos.y, endPos.y, t);
                 }
+                // }
 
                 const trail = entityData.trail;
                 const lastPoint = trail[trail.length - 1];
@@ -358,11 +363,16 @@
                     t = 0;
                     entityData.currentCategoryIndex =
                         (currentIndex + 1) % categories.length;
-                    if (
-                        entityData.currentCategoryIndex === 0 &&
-                        isHighlighted
-                    ) {
-                        markEntityLoopComplete(entityData.moveBy);
+                    if (entityData.currentCategoryIndex === 0) {
+                        entityData.loopsCompleted += 1;
+
+                        if (
+                            entityData.loopsCompleted >=
+                                entityData.loopsToComplete &&
+                            isHighlighted
+                        ) {
+                            markEntityLoopComplete(entityData.moveBy);
+                        }
                     }
                 }
 
