@@ -50,6 +50,7 @@
         }, {});
 
     function selectOption(type, option) {
+        resetQueries();
         highlightedEntities.set([]);
         if (type === "clusterBy") {
             config.update((c) => ({ ...c, clusterBy: option }));
@@ -85,92 +86,169 @@
         highlightedEntities.set(tempHighlightedEntities);
     }
 
-    // $: highlightedData =
-    //     $highlightedEntities.length > 0
-    //         ? $highlightedEntities.map((entityName) => $entities[entityName])
-    //         : [];
+    function resetQueries() {
+        config.update((c) => ({
+            ...c,
+            queryValue: "",
+            selectedClusterValue: null,
+        }));
+        highlightedEntities.set([]);
+    }
+
+    const minFontSize = 12;
+    const maxFontSize = 30;
+
+    $: entitiesList = Object.entries(filteredEntities).map(
+        ([entityName, entityData]) => [
+            entityName,
+            entityData.dataPoints.length,
+        ],
+    );
+
+    $: allValues = entitiesList.map(([_, value]) => value);
+
+    $: minValue = allValues.length > 0 ? Math.min(...allValues) : 0;
+    $: maxValue = allValues.length > 0 ? Math.max(...allValues) : 1;
+
+    function getFontSize(value) {
+        if (minValue === maxValue) {
+            return minFontSize;
+        }
+        return (
+            minFontSize +
+            ((value - minValue) * (maxFontSize - minFontSize)) /
+                (maxValue - minValue)
+        );
+    }
+
+    const minClusterFontSize = 12;
+    const maxClusterFontSize = 30;
+
+    $: clusterValuesList = uniqueClusterValues.map((clusterValue) => {
+        const count = Object.values($entities).filter((entity) =>
+            entity.categories.includes(clusterValue),
+        ).length;
+
+        return [clusterValue, count];
+    });
+
+    $: clusterCounts = clusterValuesList.map(([_, count]) => count);
+
+    $: minClusterCount =
+        clusterCounts.length > 0 ? Math.min(...clusterCounts) : 0;
+    $: maxClusterCount =
+        clusterCounts.length > 0 ? Math.max(...clusterCounts) : 1;
+
+    function getClusterFontSize(count) {
+        if (minClusterCount === maxClusterCount) {
+            return minClusterFontSize;
+        }
+        return (
+            minClusterFontSize +
+            ((count - minClusterCount) *
+                (maxClusterFontSize - minClusterFontSize)) /
+                (maxClusterCount - minClusterCount)
+        );
+    }
 </script>
 
 <header>
-    <div class="category">
-        <label>Cluster By:</label>
-        <div class="options">
-            {#each reducedClusterOptions as option}
-                <span
-                    class:selected={option === $config.clusterBy}
-                    on:click={() => selectOption("clusterBy", option)}
-                >
-                    {option}
-                </span>
-            {/each}
+    <button class="reset" on:click={resetQueries}>Reset</button>
+    <div class="categories">
+        <div class="category">
+            <label>Cluster By:</label>
+            <div class="options">
+                {#each reducedClusterOptions as option}
+                    <span
+                        class:selected={option === $config.clusterBy}
+                        on:click={() => selectOption("clusterBy", option)}
+                    >
+                        {option}
+                    </span>
+                {/each}
+            </div>
         </div>
-    </div>
 
-    <div class="category">
-        <label>Move By:</label>
-        <div class="options">
-            {#each reducedMoveOptions as option}
-                <span
-                    class:selected={option === $config.moveBy}
-                    on:click={() => selectOption("moveBy", option)}
-                >
-                    {option}
-                </span>
-            {/each}
+        <div class="category">
+            <label>Move By:</label>
+            <div class="options">
+                {#each reducedMoveOptions as option}
+                    <span
+                        class:selected={option === $config.moveBy}
+                        on:click={() => selectOption("moveBy", option)}
+                    >
+                        {option}
+                    </span>
+                {/each}
+            </div>
         </div>
-    </div>
 
-    <div class="filtered-cluster-values">
-        <label>Values for {$config.clusterBy}:</label>
-        <div class="options tiny">
-            {#each uniqueClusterValues as value}
-                <span
-                    class:highlighted={value === $config.selectedClusterValue}
-                    on:click={() => selectClusterValue(value)}
-                >
-                    {value}
-                </span>
-            {/each}
+        <div class="filtered-cluster-values">
+            <label>Values for {$config.clusterBy}:</label>
+            <div class="options tiny">
+                {#each clusterValuesList as [value, count]}
+                    <span
+                        style="font-size: {getClusterFontSize(count)}px;"
+                        class:highlighted={value ===
+                            $config.selectedClusterValue}
+                        on:click={() => selectClusterValue(value)}
+                    >
+                        {value}
+                    </span>
+                {/each}
+            </div>
         </div>
-    </div>
 
-    <div class="filtered-entities">
-        <label>Filter By:</label>
-
-        <input
-            type="text"
-            placeholder="Enter your query"
-            bind:value={$config.queryValue}
-        />
-        <div class="options tiny">
-            len: {Object.keys(filteredEntities).length}
-            {#each Object.keys(filteredEntities).slice(0, 50).sort() as entity}
-                <span
-                    class:highlighted={$highlightedEntities.includes(entity)}
-                    on:click={() => highlightedEntities.set([entity])}
-                >
-                    {entity}
-                </span>
-            {/each}
+        <div class="filtered-entities">
+            <label>Filter By:</label>
+            <input
+                type="text"
+                placeholder="Enter your query"
+                bind:value={$config.queryValue}
+            />
+            <div class="options tiny">
+                len: {entitiesList.length}
+                {#each entitiesList
+                    .slice(0, 50)
+                    .sort( ([aName], [bName]) => aName.localeCompare(bName), ) as [entity, value]}
+                    <span
+                        style="font-size: {getFontSize(value)}px;"
+                        class:highlighted={$highlightedEntities.includes(
+                            entity,
+                        )}
+                        on:click={() => highlightedEntities.set([entity])}
+                    >
+                        {entity}
+                    </span>
+                {/each}
+            </div>
         </div>
     </div>
 </header>
 
 <style>
+    .reset {
+        float: right;
+        margin: 10px;
+    }
+
     header {
         background: black;
         color: var(--main-color);
         padding: 10px;
-        display: flex;
         font-size: 20px;
+    }
+    header >  .categories {
+        display: flex;
         align-items: flex-start;
         justify-content: center;
         flex-wrap: wrap;
+        gap: 10px;
     }
 
-    header > div {
+    .categories > div {
         flex: 1;
-        flex: 0 0 25%;
+        flex: 0 0 20%;
         margin-bottom: 5px;
     }
 
@@ -221,5 +299,19 @@
 
     .options span:hover {
         color: lightgray;
+    }
+
+    button {
+        background-color: var(--main-color);
+        color: black;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    button:hover {
+        background-color: lightgray;
     }
 </style>
