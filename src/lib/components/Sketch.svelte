@@ -314,27 +314,28 @@
                 //     currentPosition.y =
                 //         startPos.y + offsetRadius * s.sin(angle);
                 // } else {
-                const angle = s.TWO_PI * t;
+                // const angle = s.TWO_PI * t;
                 if (curvesData) {
-                    const offset = 50; //* s.cos(angle);
-                    const control1X =
-                        startPos.x + (endPos.x - startPos.x) / 2 - offset;
-                    const control1Y = startPos.y + offset;
-                    const control2X = endPos.x + offset;
-                    const control2Y =
-                        startPos.y + (endPos.y - startPos.y) / 2 - offset;
+                    const controlPoint1 = {
+                        x: startPos.x - 25,
+                        y: startPos.y - 25,
+                    };
+                    const controlPoint2 = {
+                        x: endPos.x + 25,
+                        y: endPos.y + 25,
+                    };
 
                     currentPosition.x = s.bezierPoint(
                         startPos.x,
-                        control1X,
-                        control2X,
+                        controlPoint1.x - 50,
+                        controlPoint2.x - 50,
                         endPos.x,
                         t,
                     );
                     currentPosition.y = s.bezierPoint(
                         startPos.y,
-                        control1Y,
-                        control2Y,
+                        controlPoint1.y + 50,
+                        controlPoint2.y + 50,
                         endPos.y,
                         t,
                     );
