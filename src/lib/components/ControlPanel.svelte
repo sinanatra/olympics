@@ -17,8 +17,8 @@
         }
     }
 
-    const excludedClusterOptions = ["height", "noc", "weight", "medal"];
-    const excludedMoveOptions = ["height", "noc", "weight", "medal"];
+    const excludedClusterOptions = [];
+    const excludedMoveOptions = [];
 
     $: reducedClusterOptions = filteredOptions.filter(
         (option) => !excludedClusterOptions.includes(option),
@@ -170,13 +170,29 @@
     const minClusterFontSize = 12;
     const maxClusterFontSize = 30;
 
-    $: clusterValuesList = uniqueClusterValues.map((clusterValue) => {
-        const count = Object.values($entities).filter((entity) =>
-            entity.categories.includes(clusterValue),
-        ).length;
+    $: clusterValuesList = (() => {
+        let clustersToUse = uniqueClusterValues;
+        if ($highlightedEntities.length > 0) {
+            clustersToUse = uniqueClusterValues.filter((clusterValue) => {
+                return Object.values($entities).some(
+                    (entity) =>
+                        $highlightedEntities.includes(entity.moveBy) &&
+                        entity.categories.includes(clusterValue),
+                );
+            });
+        }
 
-        return [clusterValue, count];
-    });
+        return clustersToUse.map((clusterValue) => {
+            const count = Object.values($entities).filter(
+                (entity) =>
+                    ($highlightedEntities.length === 0 ||
+                        $highlightedEntities.includes(entity.moveBy)) &&
+                    entity.categories.includes(clusterValue),
+            ).length;
+
+            return [clusterValue, count];
+        });
+    })();
 
     $: clusterCounts = clusterValuesList.map(([_, count]) => count);
 
