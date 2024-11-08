@@ -1,30 +1,34 @@
 <script>
     import { base } from "$app/paths";
-    import { onMount, onDestroy } from "svelte";
-    import { data, width, height, config } from "$lib/stores.js";
+    import { onMount } from "svelte";
+    import {
+        data,
+        width,
+        height,
+        config,
+        highlightedEntities,
+    } from "$lib/stores.js";
     import Sketch from "$lib/components/Sketch.svelte";
-    import TestPanel from "$lib/components/TestPanel.svelte";
+    import TestPanel from  "$lib/components/TestPanel.svelte";
     import InfoPanel from "$lib/components/InfoPanel.svelte";
     import { tsv } from "d3-fetch";
-    import { highlightedEntities } from "$lib/stores.js";
     import { loopStatusStore, resetLoopStatus } from "$lib/loopStatus";
     import stories from "$lib/stories.json";
 
-    // $config.clusterBy = "age";
-    // $config.moveBy = "name";
-    // $config.speed = 3;
-    // $config.stroke = 2;
-    // $config.queryValue = "";
-
     let currentStoryIndex = -1;
-    let currentStory = stories[currentStoryIndex];
+    let currentStory = null;
 
     function advanceStory() {
         currentStoryIndex = (currentStoryIndex + 1) % stories.length;
         currentStory = stories[currentStoryIndex];
 
-        $highlightedEntities = currentStory.highlightedEntities || [];
-        $config = currentStory.config;
+        // Update config and highlightedEntities from the current story's config
+        config.update((c) => ({
+            ...c,
+            ...currentStory.config,
+        }));
+
+        highlightedEntities.set(currentStory.config.highlightedEntities || []);
     }
 
     loopStatusStore.subscribe(({ entityCompletedLoop }) => {
@@ -52,12 +56,12 @@
             <Sketch />
             <InfoPanel {currentStory} />
         </div>
+        <div>
+            <TestPanel />
+        </div>
     {:else}
         <p>Loading...</p>
     {/if}
-    <div>
-        <TestPanel />
-    </div>
 </main>
 
 <style>

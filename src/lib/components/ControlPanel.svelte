@@ -8,6 +8,15 @@
     import { clusterOptions, filteredOptions } from "$lib/constants.js";
     import { get } from "svelte/store";
 
+    let queryValue = $config.queryValue || "";
+
+    function onQueryInput(event) {
+        if (event.target.value.length > 3) {
+            queryValue = event.target.value;
+            config.update((c) => ({ ...c, queryValue }));
+        }
+    }
+
     const excludedClusterOptions = ["height", "noc", "weight", "medal"];
     const excludedMoveOptions = ["height", "noc", "weight", "medal"];
 
@@ -30,10 +39,10 @@
                   )
                 : true;
 
-            const query = $config.queryValue.toLowerCase();
-            const category = $config.queryCategory;
+            const query = queryValue.toLowerCase();
+            const category = $config.queryCategory || "name";
             const matchesQuery =
-                $config.queryValue.length >= 3
+                query.length >= 3
                     ? entityData.dataPoints.some((dp) =>
                           dp[category]
                               ?.toString()
@@ -62,8 +71,8 @@
     function selectClusterValue(value) {
         config.update((c) => ({ ...c, selectedClusterValue: value }));
 
-        const query = $config.queryValue.toLowerCase();
-        const category = $config.queryCategory;
+        const query = queryValue.toLowerCase();
+        const category = $config.queryCategory || "name";
         const tempHighlightedEntities = [];
 
         Object.entries(get(entities)).forEach(([entityName, entityData]) => {
@@ -71,9 +80,15 @@
                 (dp) => dp[$config.clusterBy]?.toString() === value.toString(),
             );
 
-            const matchesQuery = entityData.dataPoints.some((dp) =>
-                dp[category]?.toString().toLowerCase().includes(query),
-            );
+            const matchesQuery =
+                query.length >= 3
+                    ? entityData.dataPoints.some((dp) =>
+                          dp[category]
+                              ?.toString()
+                              .toLowerCase()
+                              .includes(query),
+                      )
+                    : true;
 
             if (matchesCluster && matchesQuery) {
                 tempHighlightedEntities.push(entityName);
@@ -92,7 +107,38 @@
             queryValue: "",
             selectedClusterValue: null,
         }));
+        queryValue = "";
         highlightedEntities.set([]);
+    }
+
+    function copyConfig() {
+        const currentConfig = {
+            title: "",
+            description: "",
+            methodology: "",
+            config: {
+                clusterBy: $config.clusterBy,
+                moveBy: $config.moveBy,
+                selectedClusterValue: $config.selectedClusterValue || "",
+                queryValue: queryValue,
+                queryCategory: $config.queryCategory || "name",
+                speed: $config.speed || 3,
+                stroke: $config.stroke || 1,
+                loops: $config.loopsToComplete || 1,
+                highlightedEntities: get(highlightedEntities),
+            },
+        };
+
+        const jsonString = JSON.stringify(currentConfig, null, 4);
+
+        navigator.clipboard
+            .writeText(jsonString)
+            .then(() => {
+                alert("Config copied to clipboard!");
+            })
+            .catch((err) => {
+                console.error("Could not copy text: ", err);
+            });
     }
 
     const minFontSize = 12;
@@ -153,7 +199,10 @@
 </script>
 
 <header>
-    <button class="reset" on:click={resetQueries}>Reset</button>
+    <div class="header-buttons">
+        <button class="reset" on:click={resetQueries}>Reset</button>
+        <button class="copy-config" on:click={copyConfig}>Copy Config</button>
+    </div>
     <div class="categories">
         <div class="category">
             <label>Cluster By:</label>
@@ -204,10 +253,10 @@
             <input
                 type="text"
                 placeholder="Enter your query"
-                bind:value={$config.queryValue}
+                value={queryValue}
+                on:input={onQueryInput}
             />
             <div class="options tiny">
-                <!-- len: {entitiesList.length} -->
                 {#each entitiesList
                     .slice(0, 50)
                     .sort( ([aName], [bName]) => aName.localeCompare(bName), ) as [entity, value]}
@@ -232,9 +281,11 @@
 </header>
 
 <style>
-    .reset {
-        float: right;
-        margin: 10px;
+    .header-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-bottom: 10px;
     }
 
     header {
@@ -306,17 +357,18 @@
         color: lightgray;
     }
 
-    button {
+    .reset,
+    .copy-config {
         background-color: var(--main-color);
         color: black;
         border: none;
         padding: 5px 10px;
         cursor: pointer;
         font-size: 16px;
-        margin-bottom: 10px;
     }
 
-    button:hover {
+    .reset:hover,
+    .copy-config:hover {
         background-color: lightgray;
     }
 </style>

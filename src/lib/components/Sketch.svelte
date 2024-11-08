@@ -59,11 +59,12 @@
             s.background(0, 0.1);
 
             const entitiesData = get(entities);
-            const highlightedEntitiesData = get(highlightedEntities);
             const clustersData = get(clusters);
             const clusterPositionsData = get(clusterPositions);
             const curvesData = get(curves);
             const configData = get(config);
+            const highlightedEntitiesData =
+                configData.highlightedEntities || get(highlightedEntities);
             const strokeWeightValue = configData.stroke || get(stroke);
             const fontLoadedData = get(fontLoaded);
             const speedValue = configData.speed || get(speed);
@@ -316,7 +317,7 @@
                 // } else {
                 // const angle = s.TWO_PI * t;
                 if (curvesData) {
-                    const offsetRadius = 25;
+                    const offsetRadius = 50;
                     const controlPoint1 = {
                         x: startPos.x - offsetRadius / 2,
                         y: startPos.y - offsetRadius / 2,
