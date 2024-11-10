@@ -80,15 +80,9 @@
                 (dp) => dp[$config.clusterBy]?.toString() === value.toString(),
             );
 
-            const matchesQuery =
-                query.length >= 3
-                    ? entityData.dataPoints.some((dp) =>
-                          dp[category]
-                              ?.toString()
-                              .toLowerCase()
-                              .includes(query),
-                      )
-                    : true;
+            const matchesQuery = entityData.dataPoints.some((dp) =>
+                dp[category]?.toString().toLowerCase().includes(query),
+            );
 
             if (matchesCluster && matchesQuery) {
                 tempHighlightedEntities.push(entityName);
@@ -171,27 +165,48 @@
     const maxClusterFontSize = 30;
 
     $: clusterValuesList = (() => {
+        const entitiesArray = Object.values($entities);
+
+        const highlightedSet = new Set($highlightedEntities);
+        const isHighlightActive = highlightedSet.size > 0;
+
         let clustersToUse = uniqueClusterValues;
-        if ($highlightedEntities.length > 0) {
+        const result = [];
+
+        if (isHighlightActive) {
             clustersToUse = uniqueClusterValues.filter((clusterValue) => {
-                return Object.values($entities).some(
-                    (entity) =>
-                        $highlightedEntities.includes(entity.moveBy) &&
-                        entity.categories.includes(clusterValue),
-                );
+                for (let i = 0; i < entitiesArray.length; i++) {
+                    const entity = entitiesArray[i];
+                    if (
+                        highlightedSet.has(entity.moveBy) &&
+                        entity.categories.includes(clusterValue)
+                    ) {
+                        return true;
+                    }
+                }
+                return false;
             });
         }
 
-        return clustersToUse.map((clusterValue) => {
-            const count = Object.values($entities).filter(
-                (entity) =>
-                    ($highlightedEntities.length === 0 ||
-                        $highlightedEntities.includes(entity.moveBy)) &&
-                    entity.categories.includes(clusterValue),
-            ).length;
+        for (let i = 0; i < clustersToUse.length; i++) {
+            const clusterValue = clustersToUse[i];
+            let count = 0;
 
-            return [clusterValue, count];
-        });
+            for (let j = 0; j < entitiesArray.length; j++) {
+                const entity = entitiesArray[j];
+
+                if (
+                    (!isHighlightActive || highlightedSet.has(entity.moveBy)) &&
+                    entity.categories.includes(clusterValue)
+                ) {
+                    count++;
+                }
+            }
+
+            result.push([clusterValue, count]);
+        }
+
+        return result;
     })();
 
     $: clusterCounts = clusterValuesList.map(([_, count]) => count);
@@ -254,7 +269,7 @@
                 {#each clusterValuesList as [value, count]}
                     <span
                         style="font-size: {getClusterFontSize(count)}px;"
-                        class:highlighted={value ===
+                        class:highlighted={value ==
                             $config.selectedClusterValue}
                         on:click={() => selectClusterValue(value)}
                     >
