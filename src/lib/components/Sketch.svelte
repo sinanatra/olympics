@@ -150,14 +150,14 @@
             }
         };
 
-        s.windowResized = () => {
-            width.set(window.innerWidth);
-            height.set(window.innerHeight - 200);
-            s.resizeCanvas(get(width), get(height));
-            s.background(0);
+        // s.windowResized = () => {
+        //     width.set(window.innerWidth);
+        //     height.set(600);
+        //     s.resizeCanvas(get(width), get(height));
+        //     s.background(0);
 
-            updateEntityPositions();
-        };
+        //     updateEntityPositions();
+        // };
     };
 
     function processClusters() {

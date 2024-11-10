@@ -45,7 +45,7 @@
         data.set(loadedData);
 
         width.set(window.innerWidth);
-        height.set(window.innerHeight - 200);
+        height.set(600);
         advanceStory();
     });
 </script>
