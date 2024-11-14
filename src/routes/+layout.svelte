@@ -1,13 +1,14 @@
 <script>
     import { config } from "$lib/stores.js";
+    import { base } from "$app/paths";
 
     import { colorMap } from "$lib/constants.js";
     $: color = colorMap[$config.clusterBy]?.start || [0, 0, 0];
 </script>
 
 <header data-sveltekit-reload>
-    <a href="/stories">Stories</a>
-    <a href="/search">Search</a>
+    <a href="{base}/stories">Stories</a>
+    <a href="{base}/search">Search</a>
 </header>
 <article style="--main-color: hsl({color[0]}, {color[1]}%, {color[2]}%);">
     <slot />
