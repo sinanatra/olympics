@@ -1,76 +1,44 @@
 <script>
-    import { base } from "$app/paths";
-    import { onMount } from "svelte";
-    import {
-        data,
-        width,
-        height,
-        config,
-        highlightedEntities,
-    } from "$lib/stores.js";
-    import Sketch from "$lib/components/Sketch.svelte";
-    import TestPanel from  "$lib/components/TestPanel.svelte";
-    import InfoPanel from "$lib/components/InfoPanel.svelte";
-    import { tsv } from "d3-fetch";
-    import { loopStatusStore, resetLoopStatus } from "$lib/loopStatus";
-    import stories from "$lib/stories.json";
-
-    let currentStoryIndex = -1;
-    let currentStory = null;
-
-    function advanceStory() {
-        currentStoryIndex = (currentStoryIndex + 1) % stories.length;
-        currentStory = stories[currentStoryIndex];
-
-        // Update config and highlightedEntities from the current story's config
-        config.update((c) => ({
-            ...c,
-            ...currentStory.config,
-        }));
-
-        highlightedEntities.set(currentStory.config.highlightedEntities || []);
-    }
-
-    loopStatusStore.subscribe(({ entityCompletedLoop }) => {
-        if (entityCompletedLoop) {
-            advanceStory();
-            resetLoopStatus();
-        }
-    });
-
-    onMount(async () => {
-        const loadedData = await tsv(
-            base + "/data/update-until-2022/until2022-all-winter-olympia.tsv",
-        );
-        data.set(loadedData);
-
-        width.set(window.innerWidth);
-        height.set(600);
-        advanceStory();
-    });
+    export let data;
 </script>
 
 <main>
-    {#if $data.length > 0}
-        <div>
-            <Sketch />
-            <InfoPanel {currentStory} />
-        </div>
-        <div>
-            <TestPanel />
-        </div>
-    {:else}
-        <p>Loading...</p>
-    {/if}
+    {#each data.posts as d}
+        <a href={d.path.replace("/texts/", "")}  data-sveltekit-reload>
+            <div>
+                <h1>
+                    {@html d.meta.title}
+                </h1>
+                <p>{@html d.meta.description}</p>
+            </div>
+        </a>
+    {/each}
 </main>
 
 <style>
-    div {
-        position: sticky;
-        top: 0;
+    main {
+        padding: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
     }
-    p {
-        height: 100vh;
+
+    div {
         padding: 10px;
+        background-color: white;
+        border-radius: 10px;
+        min-height: 250px;
+        max-width: 350px;
+    }
+
+    a {
+        color: black;
+        text-decoration: none;
+    }
+
+    a:hover div {
+        color: white;
+        background-color: black;
+        box-shadow: inset 0px 0px 2px 2px white;
     }
 </style>

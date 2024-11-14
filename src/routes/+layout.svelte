@@ -5,6 +5,10 @@
     $: color = colorMap[$config.clusterBy]?.start || [0, 0, 0];
 </script>
 
+<header data-sveltekit-reload>
+    <a href="/stories">Stories</a>
+    <a href="/search">Search</a>
+</header>
 <article style="--main-color: hsl({color[0]}, {color[1]}%, {color[2]}%);">
     <slot />
 </article>
@@ -22,5 +26,13 @@
         font-family: circular;
         src: url("/font/CircularStd-Book.otf");
         font-weight: normal;
+    }
+
+    header {
+        padding: 5px;
+    }
+
+    a {
+        color: white;
     }
 </style>

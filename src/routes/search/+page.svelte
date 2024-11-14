@@ -16,7 +16,7 @@
 
     onMount(async () => {
         const loadedData = await tsv(
-            base + "/data/update-until-2022/until2022-all-winter-olympia.tsv",
+            base + "/data/update-until-2022/data.tsv",
         );
         data.set(loadedData);
 

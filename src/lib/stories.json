@@ -1,5 +1,23 @@
 [
     {
+        "title": "",
+        "description": "",
+        "methodology": "",
+        "config": {
+            "clusterBy": "age",
+            "moveBy": "name",
+            "selectedClusterValue": "11",
+            "queryValue": "",
+            "queryCategory": "name",
+            "speed": 3,
+            "stroke": 50,
+            "loops": 1,
+            "highlightedEntities": [
+                "Sonja Henie (-Topping, -Gardiner, -Onstad)"
+            ]
+        }
+    },
+    {
         "title": "All-or-Nothing Sports",
         "description": "Curling is a sport that demands dedication, with most athletes specializing exclusively in it. However, Georges Jules Andr, a French athlete, broke the mold by competing in both Curling and Bobsleigh. Andr's unique dual participation at the 1924 Winter Olympics in Chamonix, where he won a bronze medal in Men's Curling and also competed in the Men's Four/Five Bobsleigh event, makes his story stand out. His Olympic journey showcases the exceptional versatility of athletes who defy specialization, excelling in two contrasting winter sports.",
         "methodology": "Clusters represent sports, highlighting athletes who specialize in Curling and rarely change discipline.",

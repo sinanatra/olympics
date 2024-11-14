@@ -119,11 +119,11 @@
                 speed: $config.speed || 3,
                 stroke: $config.stroke || 1,
                 loops: $config.loopsToComplete || 1,
-                highlightedEntities: get(highlightedEntities),
+                highlightedEntities: get(highlightedEntities), //.join(","),
             },
         };
 
-        const jsonString = JSON.stringify(currentConfig, null, 4);
+        const jsonString = JSON.stringify(currentConfig, null, 2);
 
         navigator.clipboard
             .writeText(jsonString)

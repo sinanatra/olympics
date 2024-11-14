@@ -275,6 +275,7 @@
         const isEntityHighlighted =
             highlightedEntitiesData.length === 0 || isHighlighted;
 
+
         const strokeColor =
             isEntityHighlighted && colorMap[configData.clusterBy]
                 ? colorMap[configData.clusterBy]?.start
