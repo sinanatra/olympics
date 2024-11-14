@@ -51,48 +51,62 @@
             <Sketch />
         </div>
 
+        {#if datum.meta.methodology}
+            <div class="methodology">
+                {@html datum.meta.methodology}
+            </div>
+        {/if}
         <div class="info">
             <div class="title">
                 <h1>{@html datum?.meta.title}</h1>
             </div>
             <div class="content">
-                <div class="description">
-                    {@html datum?.text}
-                </div>
-                <div class="methodology">
-                    {@html datum?.meta.methodology}
-                </div>
-                <div class="medias">
-                    {#each datum?.meta.config.highlightedEntities as high}
-                        <!-- {high} -->
+                {#if datum.meta.config.highlightedEntities}
+                    <div class="medias">
+                        {#each datum?.meta.config.highlightedEntities as high}
+                            <!-- {high} -->
 
-                        {#if athletes}
-                            {#each athletes.filter((d) => d.name.toLowerCase() == high) as athlete}
-                                {#if athlete.image}
-                                    <div class="athlete">
-                                        <!-- {athlete.name} -->
-                                        <img
-                                            src={athlete.image}
-                                            alt={athlete.name}
-                                        />
-                                    </div>
-                                {:else}
-                                    <!-- <p>no img</p> -->
-                                {/if}
-                            {/each}
-                        {/if}
-                    {/each}
-                </div>
+                            {#if athletes}
+                                {#each athletes.filter((d) => d.name.toLowerCase() == high) as athlete}
+                                    {#if athlete.image}
+                                        <a href={athlete.url} target="_blank">
+                                            <div class="athlete">
+                                                <img
+                                                    src={athlete.image}
+                                                    alt={athlete.name}
+                                                />
+                                                <p>
+                                                    {athlete.name}
+                                                </p>
+                                            </div>
+                                        </a>
+                                    {:else}
+                                        <!-- <p>no img</p> -->
+                                    {/if}
+                                {/each}
+                            {/if}
+                        {/each}
+                    </div>
+                {/if}
+                {#if datum.text}
+                    <div class="description">
+                        {@html datum.text}
+                    </div>
+                {/if}
             </div>
         </div>
     {:else}
-        <p>Loading...</p>
+        <p class="loading">Loading...</p>
     {/if}
 </main>
 
 <style>
     .sketch {
         min-height: 600px;
+    }
+
+    .loading {
+        padding: 10px;
     }
 
     .info {
@@ -108,7 +122,7 @@
 
     .content {
         display: grid;
-        grid-template-columns: 2fr 1fr 1fr;
+        grid-template-columns: 2fr 1fr;
         gap: 20px;
     }
 
@@ -121,6 +135,10 @@
 
     .methodology {
         color: var(--main-color);
+        text-align: right;
+        opacity: 0.6;
+        font-size: 0.6rem;
+        padding: 10px;
     }
 
     :global(.content p) {
@@ -134,9 +152,20 @@
         gap: 10px;
     }
 
+    a {
+        color: var(--main-color);
+        text-decoration: unset;
+    }
+
+    .athlete p {
+        max-width: 35px;
+        font-size: 0.4rem;
+        opacity: 0.6;
+        word-break: break-word;
+    }
     .athlete img {
-        max-width: 50px;
-        max-height: 50px;
+        max-width: 40px;
+        max-height: 40px;
         object-fit: cover;
         width: 100%;
         filter: grayscale(100%);
