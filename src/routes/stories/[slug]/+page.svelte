@@ -29,7 +29,15 @@
             base + "/data/update-until-2022/data.tsv",
         );
 
-        storeData.set(loadedTSVData);
+         const processedData = loadedTSVData.map((row) => {
+            const processedRow = {};
+            for (const [key, value] of Object.entries(row)) {
+                processedRow[key] = value?.trim() ? value : "?";
+            }
+            return processedRow;
+        });
+
+        storeData.set(processedData);
 
         const response = await fetch(base + "/data/athletes.json");
         athletes = await response.json();

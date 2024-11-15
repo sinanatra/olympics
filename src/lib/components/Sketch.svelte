@@ -149,15 +149,6 @@
                 );
             }
         };
-
-        // s.windowResized = () => {
-        //     width.set(window.innerWidth);
-        //     height.set(600);
-        //     s.resizeCanvas(get(width), get(height));
-        //     s.background(0);
-
-        //     updateEntityPositions();
-        // };
     };
 
     function processClusters() {
@@ -212,8 +203,11 @@
         const yRadius = (get(height) - margin * 2) / 2;
         const tempClusterPositions = {};
 
+        const totalClusters = get(clusters).length;
+        const startAngle = Math.PI;
+
         get(clusters).forEach(([clusterKey], i) => {
-            const angle = (i / get(clusters).length) * Math.PI * 2;
+            const angle = startAngle + (i / totalClusters) * Math.PI * 2;
             const position = get(randomizeClusters)
                 ? {
                       x: margin + Math.random() * (get(width) - 2 * margin),
@@ -225,8 +219,8 @@
                   };
 
             tempClusterPositions[clusterKey] = {
-                x: position.x + (Math.random() - 0.5),
-                y: position.y + (Math.random() - 0.5),
+                x: position.x,
+                y: position.y,
             };
         });
 
@@ -237,9 +231,9 @@
 
         Object.values(tempEntities).forEach((entity) => {
             const initialClusterKey = entity.categories[0];
-            if (get(clusterPositions)[initialClusterKey]) {
+            if (tempClusterPositions[initialClusterKey]) {
                 entity.position = {
-                    ...get(clusterPositions)[initialClusterKey],
+                    ...tempClusterPositions[initialClusterKey],
                 };
                 entity.t = 0;
                 entity.currentCategoryIndex = 0;
@@ -275,7 +269,6 @@
         const isEntityHighlighted =
             highlightedEntitiesData.length === 0 || isHighlighted;
 
-
         const strokeColor =
             isEntityHighlighted && colorMap[configData.clusterBy]
                 ? colorMap[configData.clusterBy]?.start
@@ -308,15 +301,6 @@
             if (startPos && endPos) {
                 let currentPosition = { x: 0, y: 0 };
 
-                // if (startClusterKey === endClusterKey) {
-                //     const offsetRadius = 5;
-                //     const angle = s.TWO_PI * t;
-                //     currentPosition.x =
-                //         startPos.x + offsetRadius * s.cos(angle);
-                //     currentPosition.y =
-                //         startPos.y + offsetRadius * s.sin(angle);
-                // } else {
-                // const angle = s.TWO_PI * t;
                 if (curvesData) {
                     const offsetRadius = 50;
                     const controlPoint1 = {
@@ -346,7 +330,6 @@
                     currentPosition.x = s.lerp(startPos.x, endPos.x, t);
                     currentPosition.y = s.lerp(startPos.y, endPos.y, t);
                 }
-                // }
 
                 const trail = entityData.trail;
                 const lastPoint = trail[trail.length - 1];

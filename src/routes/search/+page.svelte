@@ -15,10 +15,17 @@
     // $config.queryValue = ""
 
     onMount(async () => {
-        const loadedData = await tsv(
-            base + "/data/update-until-2022/data.tsv",
-        );
-        data.set(loadedData);
+        const loadedData = await tsv(base + "/data/update-until-2022/data.tsv");
+
+        const processedData = loadedData.map((row) => {
+            const processedRow = {};
+            for (const [key, value] of Object.entries(row)) {
+                processedRow[key] = value?.trim() ? value : "?";
+            }
+            return processedRow;
+        });
+
+        data.set(processedData);
 
         width.set(window.innerWidth);
         height.set(600);
