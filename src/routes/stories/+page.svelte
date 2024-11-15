@@ -1,11 +1,18 @@
 <script>
     export let data;
+    import { config } from "$lib/stores.js";
+    import { colorMap } from "$lib/constants.js";
 </script>
 
 <main>
     {#each data.posts as d}
-        <a href={d.path.replace("/texts/", "")}  data-sveltekit-reload>
-            <div>
+        <a href={d.path.replace("/texts/", "")} data-sveltekit-reload>
+            <div
+                style="background-color: hsl(
+                    {colorMap[d.meta.config.clusterBy]?.start[0]},
+                    {colorMap[d.meta.config.clusterBy]?.start[1]}%,
+                    {colorMap[d.meta.config.clusterBy]?.start[2]}% );"
+            >
                 <h1>
                     {@html d.meta.title}
                 </h1>
@@ -37,8 +44,6 @@
     }
 
     a:hover div {
-        color: white;
-        background-color: black;
-        box-shadow: inset 0px 0px 2px 2px white;
+        box-shadow: inset 0px 0px 2px 2px black;
     }
 </style>

@@ -1,6 +1,6 @@
 ---
 title: Alberto Tomba's Journey
-description: "Alberto Tomba, also known as _La Bomba_, is one of the most celebrated Italian skiers of all time. Known for his charisma and flair, Tomba dominated the slalom and giant slalom events in the late 1980s and early 1990s."
+description: "Alberto Tomba, also known as La Bomba, is one of the most celebrated Italian skiers of all time. Known for his charisma and flair, Tomba dominated the slalom and giant slalom events in the late 1980s and early 1990s."
 methodology: "Clusters represent different years, showing Alberto Tomba’s progression across Olympic events over time."
 media: false
 config: {
