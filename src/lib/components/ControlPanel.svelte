@@ -250,20 +250,6 @@
             </div>
         </div>
 
-        <div class="category">
-            <label>Move By:</label>
-            <div class="options">
-                {#each reducedMoveOptions as option}
-                    <span
-                        class:selected={option === $config.moveBy}
-                        on:click={() => selectOption("moveBy", option)}
-                    >
-                        {option}
-                    </span>
-                {/each}
-            </div>
-        </div>
-
         <div class="filtered-cluster-values">
             <label>Values for {$config.clusterBy}:</label>
             <div class="options tiny">
@@ -275,6 +261,20 @@
                         on:click={() => selectClusterValue(value)}
                     >
                         {value}
+                    </span>
+                {/each}
+            </div>
+        </div>
+
+        <div class="category">
+            <label>Move By:</label>
+            <div class="options">
+                {#each reducedMoveOptions as option}
+                    <span
+                        class:selected={option === $config.moveBy}
+                        on:click={() => selectOption("moveBy", option)}
+                    >
+                        {option}
                     </span>
                 {/each}
             </div>
@@ -338,6 +338,11 @@
         flex: 1;
         flex: 0 0 20%;
         margin-bottom: 5px;
+    }
+    
+    .category {
+        border-left: 1px solid;
+        padding-left: 50px;
     }
 
     .category,
