@@ -2,6 +2,7 @@
 title: Alberto Tomba's Journey
 description: "Alberto Tomba, also known as _La Bomba_, is one of the most celebrated Italian skiers of all time. Known for his charisma and flair, Tomba dominated the slalom and giant slalom events in the late 1980s and early 1990s."
 methodology: "Clusters represent different years, showing Alberto Tomba’s progression across Olympic events over time."
+media: false
 config: {
         clusterBy: year,
         moveBy: name,
@@ -16,9 +17,13 @@ config: {
 
 Alberto Tomba, also known as _La Bomba_, is one of the most celebrated Italian skiers of all time. Known for his charisma and flair, Tomba dominated the slalom and giant slalom events in the late 1980s and early 1990s. 
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce fermentum malesuada odio, vitae ultrices ipsum sodales id. Sed mi metus, suscipit ac auctor eget, vestibulum eget sem. Sed nec posuere nibh. Suspendisse mi mi, blandit eu nisl sed, ullamcorper tristique ligula. Nulla malesuada massa vel felis elementum, sed placerat magna congue. Ut ac purus in enim malesuada tristique id sed nisl. Quisque sed luctus ante, in facilisis lectus.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce fermentum malesuada odio, vitae ultrices ipsum sodales id. Sed mi metus, __suscipit__ ac auctor eget, vestibulum eget sem. Sed nec posuere nibh. Suspendisse mi mi, blandit eu nisl sed, ullamcorper tristique ligula. Nulla malesuada massa vel felis elementum, sed placerat magna congue. Ut ac purus in enim malesuada tristique id sed nisl. Quisque sed luctus ante, in facilisis lectus.
+
+![](https://d2a3o6pzho379u.cloudfront.net/98310.jpg)
 
 Pellentesque hendrerit odio tempor, semper nunc vitae, rutrum libero. Phasellus eros massa, rhoncus non blandit condimentum, viverra vel dui. Nullam vitae quam sodales, ornare ex vel, posuere est. In at eros massa. Fusce massa enim, placerat at neque pharetra, tempus porta massa. In sed orci nulla. Suspendisse auctor magna quis bibendum pharetra. Nulla vehicula bibendum maximus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In posuere mauris eget mattis consectetur. Fusce a vulputate diam, suscipit dapibus lacus. Morbi molestie a est a bibendum. Quisque et magna at tellus mollis tincidunt porta eu lectus.
+
+![](https://d2a3o6pzho379u.cloudfront.net/98310.jpg)
 
 Aliquam laoreet pharetra neque ullamcorper hendrerit. Nunc sit amet consectetur sapien, et imperdiet mi. Sed viverra aliquam neque. Integer congue, lacus non egestas mattis, mi sapien luctus est, vitae lacinia mauris orci a ipsum. Nulla vel porta ante. Maecenas sit amet efficitur est. Nulla facilisi. Quisque viverra, justo gravida lacinia consectetur, massa massa aliquet massa, ac iaculis orci ligula id urna.
 

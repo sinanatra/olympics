@@ -61,32 +61,37 @@
                 <h1>{@html datum?.meta.title}</h1>
             </div>
             <div class="content">
-                {#if datum.meta.config.highlightedEntities}
-                    <div class="medias">
-                        {#each datum?.meta.config.highlightedEntities as high}
-                            <!-- {high} -->
+                {#if datum?.meta.media}
+                    {#if datum.meta.config.highlightedEntities}
+                        <div class="medias">
+                            {#each datum?.meta.config.highlightedEntities as high}
+                                <!-- {high} -->
 
-                            {#if athletes}
-                                {#each athletes.filter((d) => d.name.toLowerCase() == high) as athlete}
-                                    {#if athlete.image}
-                                        <a href={athlete.url} target="_blank">
-                                            <div class="athlete">
-                                                <img
-                                                    src={athlete.image}
-                                                    alt={athlete.name}
-                                                />
-                                                <p>
-                                                    {athlete.name}
-                                                </p>
-                                            </div>
-                                        </a>
-                                    {:else}
-                                        <!-- <p>no img</p> -->
-                                    {/if}
-                                {/each}
-                            {/if}
-                        {/each}
-                    </div>
+                                {#if athletes}
+                                    {#each athletes.filter((d) => d.name.toLowerCase() == high) as athlete}
+                                        {#if athlete.image}
+                                            <a
+                                                href={athlete.url}
+                                                target="_blank"
+                                            >
+                                                <div class="athlete">
+                                                    <img
+                                                        src={athlete.image}
+                                                        alt={athlete.name}
+                                                    />
+                                                    <p>
+                                                        {athlete.name}
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        {:else}
+                                            <!-- <p>no img</p> -->
+                                        {/if}
+                                    {/each}
+                                {/if}
+                            {/each}
+                        </div>
+                    {/if}
                 {/if}
                 {#if datum.text}
                     <div class="description">
@@ -121,8 +126,9 @@
     }
 
     .content {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
+        display: flex;
+        /* display: grid;
+        grid-template-columns: 2fr 1fr; */
         gap: 20px;
     }
 
@@ -131,6 +137,11 @@
         padding-right: 15px;
         column-count: 2;
         column-gap: 20px;
+    }
+
+    :global(.description img) {
+        max-width: 260px;
+        object-fit: contain;
     }
 
     .methodology {

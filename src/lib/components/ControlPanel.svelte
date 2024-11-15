@@ -110,6 +110,7 @@
             title: "",
             description: "",
             methodology: "",
+            media: true,
             config: {
                 clusterBy: $config.clusterBy,
                 moveBy: $config.moveBy,
@@ -280,7 +281,7 @@
         </div>
 
         <div class="filtered-entities">
-            <label>Filter By:</label>
+            <label>Filter {$config.moveBy} By:</label>
             <input
                 type="text"
                 placeholder="Enter your query"

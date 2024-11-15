@@ -2,6 +2,7 @@
 title: All-or-Nothing Sports
 methodology: Clusters represent sports, highlighting athletes who specialize in Curling and rarely change discipline.
 description: Clusters represent sports, highlighting athletes who specialize in Curling and rarely change discipline.
+media: true
 config: {
     clusterBy: sport,
     moveBy: name,
