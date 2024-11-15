@@ -374,6 +374,8 @@
         font-size: 40px;
         color: var(--main-color);
         cursor: pointer;
+        transition: all 1s;
+
     }
 
     .tiny span {

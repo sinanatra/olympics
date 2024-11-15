@@ -1,15 +1,15 @@
 export const colorMap = {
-    name: { start: [0, 0, 100], end: [0, 0, 40] },
-    sport: { start: [30, 60, 80], end: [40, 80, 40] },
-    city: { start: [150, 30, 70], end: [160, 50, 50] },
-    height: { start: [60, 70, 80], end: [20, 40, 30] },
-    noc: { start: [330, 50, 80], end: [340, 40, 50] },
-    team: { start: [210, 60, 70], end: [270, 70, 60] },
-    weight: { start: [240, 50, 60], end: [220, 30, 40] },
-    year: { start: [20, 70, 60], end: [60, 50, 50] },
-    age: { start: [180, 70, 70], end: [190, 40, 40] },
-    event: { start: [350, 80, 70], end: [340, 30, 30] },
-    medal: { start: [40, 30, 70], end: [50, 50, 30] },
+    name: { start: [210, 100, 50], end: [210, 100, 20] },   // Blue gradient
+    sport: { start: [45, 100, 60], end: [45, 100, 30] },    // Yellow gradient
+    city: { start: [140, 80, 60], end: [140, 80, 30] },     // Green gradient
+    height: { start: [0, 80, 60], end: [0, 80, 30] },       // Red gradient
+    noc: { start: [0, 0, 100], end: [0, 0, 40] },           // White to black gradient
+    team: { start: [210, 80, 70], end: [210, 80, 40] },     // Light blue gradient (extended)
+    weight: { start: [60, 80, 70], end: [60, 80, 40] },     // Lime green gradient (extended)
+    year: { start: [30, 100, 60], end: [30, 100, 40] },     // Orange gradient (close to yellow)
+    age: { start: [270, 100, 60], end: [270, 100, 40] },    // Purple gradient
+    event: { start: [120, 100, 60], end: [120, 100, 40] },  // Teal gradient
+    medal: { start: [330, 80, 60], end: [330, 80, 40] }     // Pink gradient
 };
 
 export const clusterOptions = Object.keys(colorMap);
