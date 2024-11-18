@@ -269,111 +269,131 @@
         const isEntityHighlighted =
             highlightedEntitiesData.length === 0 || isHighlighted;
 
-        const strokeColor =
-            isEntityHighlighted && colorMap[configData.clusterBy]
-                ? colorMap[configData.clusterBy]?.start
-                : [0, 0, 20];
-
-        s.stroke(...strokeColor);
-        s.strokeWeight(isEntityHighlighted ? strokeWeightValue : 1);
-        s.noFill();
-        s.strokeJoin(s.ROUND);
+        const colorConfig = colorMap[configData.clusterBy] || {
+            start: [0, 0, 100],
+            end: [0, 0, 0],
+        };
 
         const categories = entityData.categories;
         const currentIndex = entityData.currentCategoryIndex;
         const position = entityData.position;
         let t = entityData.t || 0;
 
-        const minSegmentLength = 1;
-        const maxTrailSegments = 4;
+        const startClusterKey = categories[currentIndex % categories.length];
+        const endClusterKey =
+            categories[(currentIndex + 1) % categories.length];
+        const startPos = clusterPositionsData[startClusterKey];
+        const endPos = clusterPositionsData[endClusterKey];
 
-        if (!entityData.trail) entityData.trail = [];
+        if (startPos && endPos) {
+            const strokeColor = getStrokeColor(
+                s,
+                entityData,
+                colorConfig,
+                t,
+                entityData.isGoingBack,
+            );
 
-        if (categories.length > 0) {
-            const startClusterKey =
-                categories[currentIndex % categories.length];
-            const endClusterKey =
-                categories[(currentIndex + 1) % categories.length];
+            s.stroke(...strokeColor);
+            s.strokeWeight(isEntityHighlighted ? strokeWeightValue : 1);
+            s.noFill();
+            s.strokeJoin(s.ROUND);
 
-            const startPos = clusterPositionsData[startClusterKey];
-            const endPos = clusterPositionsData[endClusterKey];
+            let currentPosition = { x: 0, y: 0 };
+            if (curvesData) {
+                const offsetRadius = 50;
+                const controlPoint1 = {
+                    x: startPos.x - offsetRadius / 2,
+                    y: startPos.y - offsetRadius / 2,
+                };
+                const controlPoint2 = {
+                    x: endPos.x + offsetRadius / 2,
+                    y: endPos.y + offsetRadius / 2,
+                };
 
-            if (startPos && endPos) {
-                let currentPosition = { x: 0, y: 0 };
-
-                if (curvesData) {
-                    const offsetRadius = 50;
-                    const controlPoint1 = {
-                        x: startPos.x - offsetRadius / 2,
-                        y: startPos.y - offsetRadius / 2,
-                    };
-                    const controlPoint2 = {
-                        x: endPos.x + offsetRadius / 2,
-                        y: endPos.y + offsetRadius / 2,
-                    };
-
-                    currentPosition.x = s.bezierPoint(
-                        startPos.x,
-                        controlPoint1.x - offsetRadius,
-                        controlPoint2.x - offsetRadius,
-                        endPos.x,
-                        t,
-                    );
-                    currentPosition.y = s.bezierPoint(
-                        startPos.y,
-                        controlPoint1.y + offsetRadius,
-                        controlPoint2.y + offsetRadius,
-                        endPos.y,
-                        t,
-                    );
-                } else {
-                    currentPosition.x = s.lerp(startPos.x, endPos.x, t);
-                    currentPosition.y = s.lerp(startPos.y, endPos.y, t);
-                }
-
-                const trail = entityData.trail;
-                const lastPoint = trail[trail.length - 1];
-                if (
-                    !lastPoint ||
-                    distSquared(lastPoint, currentPosition) >=
-                        minSegmentLength * minSegmentLength
-                ) {
-                    if (trail.length >= maxTrailSegments) {
-                        trail.shift();
-                    }
-                    trail.push({ x: currentPosition.x, y: currentPosition.y });
-                }
-
-                const speedFactor = 0.004 * speedValue;
-                t += speedFactor;
-                if (t > 1) {
-                    t = 0;
-                    entityData.currentCategoryIndex =
-                        (currentIndex + 1) % categories.length;
-                    if (entityData.currentCategoryIndex === 0) {
-                        entityData.loopsCompleted += 1;
-
-                        if (
-                            entityData.loopsCompleted >=
-                                entityData.loopsToComplete &&
-                            isHighlighted
-                        ) {
-                            markEntityLoopComplete(entityData.moveBy);
-                        }
-                    }
-                }
-
-                entityData.t = t;
-                position.x = currentPosition.x;
-                position.y = currentPosition.y;
-
-                s.beginShape();
-                for (let i = 0; i < trail.length; i++) {
-                    const point = trail[i];
-                    s.vertex(point.x, point.y);
-                }
-                s.endShape();
+                currentPosition.x = s.bezierPoint(
+                    startPos.x,
+                    controlPoint1.x - offsetRadius,
+                    controlPoint2.x - offsetRadius,
+                    endPos.x,
+                    t,
+                );
+                currentPosition.y = s.bezierPoint(
+                    startPos.y,
+                    controlPoint1.y + offsetRadius,
+                    controlPoint2.y + offsetRadius,
+                    endPos.y,
+                    t,
+                );
+            } else {
+                currentPosition.x = s.lerp(startPos.x, endPos.x, t);
+                currentPosition.y = s.lerp(startPos.y, endPos.y, t);
             }
+
+            const trail = entityData.trail || [];
+            const lastPoint = trail[trail.length - 1];
+            const minSegmentLength = 1;
+            if (
+                !lastPoint ||
+                distSquared(lastPoint, currentPosition) >=
+                    minSegmentLength * minSegmentLength
+            ) {
+                if (trail.length >= 4) {
+                    trail.shift();
+                }
+                trail.push({ x: currentPosition.x, y: currentPosition.y });
+            }
+
+            const speedFactor = 0.004 * speedValue;
+            t += speedFactor;
+            if (t > 1) {
+                t = 0;
+                entityData.currentCategoryIndex =
+                    (currentIndex + 1) % categories.length;
+                if (entityData.currentCategoryIndex === 0) {
+                    entityData.loopsCompleted += 1;
+                    entityData.isGoingBack = true;
+                } else {
+                    entityData.isGoingBack = false;
+                }
+            }
+
+            entityData.t = t;
+            position.x = currentPosition.x;
+            position.y = currentPosition.y;
+
+            s.beginShape();
+            for (let i = 0; i < trail.length; i++) {
+                const point = trail[i];
+                s.vertex(point.x, point.y);
+            }
+            s.endShape();
+        }
+    }
+
+    function getStrokeColor(s, entityData, colorConfig, t, isGoingBack) {
+        const startColor = isGoingBack ? colorConfig.end : colorConfig.start;
+        const endColor = isGoingBack ? colorConfig.start : colorConfig.end;
+
+        let gradient = false;
+        if (gradient) {
+            let startHue = startColor[0];
+            let endHue = endColor[0];
+            if (Math.abs(endHue - startHue) > 180) {
+                if (endHue > startHue) {
+                    startHue -= 360;
+                } else {
+                    endHue += 360;
+                }
+            }
+
+            return [
+                (s.lerp(startHue, endHue, t) + 360) % 360,
+                s.lerp(startColor[1], endColor[1], t),
+                s.lerp(startColor[2], endColor[2], t),
+            ];
+        } else {
+            return colorMap[get(config).clusterBy]?.start;
         }
     }
 
@@ -407,6 +427,7 @@
                     trails[clusterKey] = {
                         t: Math.random(),
                         trail: [],
+                        isGoingBack: false,
                     };
                 }
 
@@ -415,6 +436,7 @@
 
                 if (clusterTrail.t > 1) {
                     clusterTrail.t = 0;
+                    clusterTrail.isGoingBack = !clusterTrail.isGoingBack;
                 }
 
                 const angle = clusterTrail.t * s.TWO_PI;
@@ -447,21 +469,31 @@
                         );
                     });
 
-                const strokeColor =
-                    isClusterHighlighted && colorMap[configData.clusterBy]
-                        ? colorMap[configData.clusterBy]?.start
-                        : [0, 0, 40];
+                if (isClusterHighlighted && configData.clusterBy) {
+                    const colorConfig = colorMap[configData.clusterBy] || {
+                        start: [0, 0, 100],
+                        end: [0, 0, 0],
+                    };
 
-                s.noFill();
-                s.stroke(...strokeColor);
-                s.strokeWeight(isClusterHighlighted ? strokeWeightValue : 1);
-                s.strokeJoin(s.ROUND);
+                    const strokeColor = getStrokeColor(
+                        s,
+                        null,
+                        colorConfig,
+                        clusterTrail.t,
+                        clusterTrail.isGoingBack,
+                    );
 
-                s.beginShape();
-                clusterTrail.trail.forEach((point) =>
-                    s.vertex(point.x, point.y),
-                );
-                s.endShape();
+                    s.noFill();
+                    s.stroke(...strokeColor);
+                    s.strokeWeight(strokeWeightValue);
+                    s.strokeJoin(s.ROUND);
+
+                    s.beginShape();
+                    clusterTrail.trail.forEach((point) =>
+                        s.vertex(point.x, point.y),
+                    );
+                    s.endShape();
+                }
             }
         });
     }
