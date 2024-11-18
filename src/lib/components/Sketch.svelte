@@ -294,7 +294,7 @@
                 entityData.isGoingBack,
             );
 
-            s.stroke(...strokeColor);
+            s.stroke(isEntityHighlighted ? [...strokeColor] : [0, 0, 40]);
             s.strokeWeight(isEntityHighlighted ? strokeWeightValue : 1);
             s.noFill();
             s.strokeJoin(s.ROUND);
