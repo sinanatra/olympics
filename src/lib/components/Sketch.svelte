@@ -47,7 +47,7 @@
             s.createCanvas(get(width), get(height));
             s.colorMode(s.HSL);
             s.background(0);
-            s.frameRate(60);
+            s.frameRate(30);
 
             if (get(data).length > 0) {
                 processClusters();
@@ -70,6 +70,9 @@
             const speedValue = configData.speed || get(speed);
             const stationaryCountsData = get(stationaryCounts);
             const randomizeClustersData = get(randomizeClusters);
+            const maxStationaryCountData = Math.max(
+                ...Object.values(stationaryCountsData),
+            );
 
             if (get(process)) {
                 processClusters();
@@ -81,11 +84,13 @@
                 s,
                 entitiesData,
                 stationaryCountsData,
+                maxStationaryCountData,
                 clusterPositionsData,
                 highlightedEntitiesData,
                 configData,
                 strokeWeightValue,
                 speedValue,
+                curvesData,
             );
 
             const entitiesByStyle = {
@@ -401,11 +406,13 @@
         s,
         entitiesData,
         stationaryCountsData,
+        maxStationaryCountData,
         clusterPositionsData,
         highlightedEntitiesData,
         configData,
         strokeWeightValue,
         speedValue,
+        curvesData,
     ) {
         const speedFactor = 0.004 * speedValue;
 
@@ -443,31 +450,36 @@
 
                 const t = clusterTrail.t;
 
-                const controlPoint1 = {
-                    x: startPos.x - offsetRadius / 2,
-                    y: startPos.y - offsetRadius / 2,
-                };
-                const controlPoint2 = {
-                    x: endPos.x + offsetRadius / 2,
-                    y: endPos.y + offsetRadius / 2,
-                };
-
                 let currentPosition = { x: 0, y: 0 };
 
-                currentPosition.x = s.bezierPoint(
-                    startPos.x,
-                    controlPoint1.x - offsetRadius,
-                    controlPoint2.x - offsetRadius,
-                    endPos.x,
-                    t,
-                );
-                currentPosition.y = s.bezierPoint(
-                    startPos.y,
-                    controlPoint1.y + offsetRadius,
-                    controlPoint2.y + offsetRadius,
-                    endPos.y,
-                    t,
-                );
+                if (curvesData) {
+                    const controlPoint1 = {
+                        x: startPos.x - offsetRadius / 2,
+                        y: startPos.y - offsetRadius / 2,
+                    };
+                    const controlPoint2 = {
+                        x: endPos.x + offsetRadius / 2,
+                        y: endPos.y + offsetRadius / 2,
+                    };
+
+                    currentPosition.x = s.bezierPoint(
+                        startPos.x,
+                        controlPoint1.x - offsetRadius,
+                        controlPoint2.x - offsetRadius,
+                        endPos.x,
+                        t,
+                    );
+                    currentPosition.y = s.bezierPoint(
+                        startPos.y,
+                        controlPoint1.y + offsetRadius,
+                        controlPoint2.y + offsetRadius,
+                        endPos.y,
+                        t,
+                    );
+                } else {
+                    currentPosition.x = s.lerp(startPos.x, endPos.x, t);
+                    currentPosition.y = s.lerp(startPos.y, endPos.y, t);
+                }
 
                 const minSegmentLength = 1;
                 const lastPoint =
@@ -511,7 +523,7 @@
                     const adjustedStrokeWeight = s.map(
                         count,
                         1,
-                        Math.max(...Object.values(stationaryCountsData)),
+                        maxStationaryCountData,
                         strokeWeightValue,
                         strokeWeightValue * 5,
                     );
