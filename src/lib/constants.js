@@ -8,8 +8,8 @@ export const colorMap = {
     weight: { start: [60, 80, 70], end: [0, 0, 100] },     // Lime green gradient (extended)
     year: { start: [30, 100, 60], end: [0, 0, 100] },     // Orange gradient (close to yellow)
     age: { start: [270, 100, 60], end: [0, 0, 100] },    // Purple gradient
-    event: { start: [120, 100, 60], end: [0, 0, 100] },  // Teal gradient
-    medal: { start: [330, 80, 60], end: [0, 0, 100] }     // Pink gradient
+    event: { start: [330, 80, 60], end: [0, 0, 100] },     // Pink gradient
+    medal: { start: [120, 100, 60], end: [0, 0, 100] }  // Teal gradient
 };
 
 export const clusterOptions = Object.keys(colorMap);

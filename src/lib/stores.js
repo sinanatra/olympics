@@ -16,7 +16,7 @@ export const config = writable({
 });
 
 export const curves = writable(true);
-export const stroke = writable(6);
+export const stroke = writable(3);
 export const speed = writable(3);
 export const process = writable(false);
 export const fontLoaded = writable(false);

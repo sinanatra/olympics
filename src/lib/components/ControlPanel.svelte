@@ -251,7 +251,7 @@
         </div>
 
         <div class="filtered-cluster-values">
-            <label>Values for {$config.clusterBy}:</label>
+            <label>Filter {$config.clusterBy}:</label>
             <div class="options tiny">
                 {#each clusterValuesList as [value, count]}
                     <span
@@ -281,7 +281,7 @@
         </div>
 
         <div class="filtered-entities">
-            <label>Filter {$config.moveBy} By:</label>
+            <label>Filter {$config.moveBy}:</label>
             <input
                 type="text"
                 placeholder="Enter your query"
@@ -325,7 +325,18 @@
         color: var(--main-color);
         padding: 10px;
         font-size: 20px;
+        overflow: scroll;
     }
+
+    label {
+        /* position: sticky;
+        top: 0; */
+        opacity: 0.6;
+        border-bottom: 1px solid;
+        padding-bottom: 10px;
+        background-color: black;
+    }
+
     header > .categories {
         display: flex;
         align-items: flex-start;
@@ -337,12 +348,14 @@
     .categories > div {
         flex: 1;
         flex: 0 0 20%;
+        /* max-height: 40vh; */
         margin-bottom: 5px;
     }
-    
-    .category {
+
+    .category:not(:first-of-type) {
         border-left: 1px solid;
-        padding-left: 50px;
+        margin-left: 20px;
+        padding-left: 20px;
     }
 
     .category,
@@ -375,7 +388,6 @@
         color: var(--main-color);
         cursor: pointer;
         transition: all 1s;
-
     }
 
     .tiny span {

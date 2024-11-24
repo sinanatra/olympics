@@ -9,7 +9,7 @@ config: {
         queryValue: alberto tomba,
         queryCategory: name,
         speed: 3,
-        stroke: 30,
+        stroke: 10,
         loops: 1,
         highlightedEntities: ["alberto tomba"]
     }

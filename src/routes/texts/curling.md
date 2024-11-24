@@ -9,7 +9,7 @@ config: {
     queryValue: curling,
     queryCategory: sport,
     speed: 3,
-    stroke: 12,
+    stroke: 10,
     loops: 10,
     highlightedEntities: [
       "michael b. \"mike\" adam",

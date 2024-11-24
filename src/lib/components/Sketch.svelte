@@ -294,14 +294,14 @@
                 entityData.isGoingBack,
             );
 
-            s.stroke(isEntityHighlighted ? [...strokeColor] : [0, 0, 40]);
-            s.strokeWeight(isEntityHighlighted ? strokeWeightValue : 1);
+            s.stroke(isEntityHighlighted ? [...strokeColor] : [0, 0, 20]);
+            s.strokeWeight(isEntityHighlighted ? strokeWeightValue : 0.5);
             s.noFill();
             s.strokeJoin(s.ROUND);
 
             let currentPosition = { x: 0, y: 0 };
             if (curvesData) {
-                const offsetRadius = 50;
+                const offsetRadius = 25;
                 const controlPoint1 = {
                     x: startPos.x - offsetRadius / 2,
                     y: startPos.y - offsetRadius / 2,
@@ -407,7 +407,6 @@
         strokeWeightValue,
         speedValue,
     ) {
-        const counts = stationaryCountsData;
         const speedFactor = 0.004 * speedValue;
 
         if (!drawStationaryEntityLoops.trails) {
@@ -415,17 +414,14 @@
         }
         const trails = drawStationaryEntityLoops.trails;
 
-        Object.keys(counts).forEach((clusterKey) => {
-            const count = counts[clusterKey];
-            const pos = clusterPositionsData[clusterKey];
+        Object.keys(stationaryCountsData).forEach((clusterKey) => {
+            const count = stationaryCountsData[clusterKey];
+            const startPos = clusterPositionsData[clusterKey];
 
-            if (pos) {
-                const trailLength = 4;
-                const minSegmentLength = 2;
-
+            if (startPos) {
                 if (!trails[clusterKey]) {
                     trails[clusterKey] = {
-                        t: Math.random(),
+                        t: 0,
                         trail: [],
                         isGoingBack: false,
                     };
@@ -436,26 +432,55 @@
 
                 if (clusterTrail.t > 1) {
                     clusterTrail.t = 0;
-                    clusterTrail.isGoingBack = !clusterTrail.isGoingBack;
                 }
 
-                const angle = clusterTrail.t * s.TWO_PI;
-                const radius = 2 + Math.sqrt(count);
-                const x = pos.x + radius * s.cos(angle);
-                const y = pos.y + radius * s.sin(angle);
-                const position = { x, y };
+                const offsetRadius = 25;
+                const controlPoint = {
+                    x: startPos.x - offsetRadius,
+                    y: startPos.y - offsetRadius,
+                };
+                const endPos = startPos;
 
+                const t = clusterTrail.t;
+
+                const controlPoint1 = {
+                    x: startPos.x - offsetRadius / 2,
+                    y: startPos.y - offsetRadius / 2,
+                };
+                const controlPoint2 = {
+                    x: endPos.x + offsetRadius / 2,
+                    y: endPos.y + offsetRadius / 2,
+                };
+
+                let currentPosition = { x: 0, y: 0 };
+
+                currentPosition.x = s.bezierPoint(
+                    startPos.x,
+                    controlPoint1.x - offsetRadius,
+                    controlPoint2.x - offsetRadius,
+                    endPos.x,
+                    t,
+                );
+                currentPosition.y = s.bezierPoint(
+                    startPos.y,
+                    controlPoint1.y + offsetRadius,
+                    controlPoint2.y + offsetRadius,
+                    endPos.y,
+                    t,
+                );
+
+                const minSegmentLength = 1;
                 const lastPoint =
                     clusterTrail.trail[clusterTrail.trail.length - 1];
                 if (
                     !lastPoint ||
-                    distSquared(lastPoint, position) >=
+                    distSquared(lastPoint, currentPosition) >=
                         minSegmentLength * minSegmentLength
                 ) {
-                    if (clusterTrail.trail.length >= trailLength) {
+                    if (clusterTrail.trail.length >= 10) {
                         clusterTrail.trail.shift();
                     }
-                    clusterTrail.trail.push(position);
+                    clusterTrail.trail.push(currentPosition);
                 }
 
                 const isClusterHighlighted =
@@ -480,12 +505,21 @@
                         null,
                         colorConfig,
                         clusterTrail.t,
-                        clusterTrail.isGoingBack,
+                        false,
+                    );
+
+                    const adjustedStrokeWeight = s.map(
+                        count,
+                        1,
+                        Math.max(...Object.values(stationaryCountsData)),
+                        strokeWeightValue,
+                        strokeWeightValue * 5,
                     );
 
                     s.noFill();
                     s.stroke(...strokeColor);
-                    s.strokeWeight(strokeWeightValue);
+                    s.strokeWeight(adjustedStrokeWeight);
+
                     s.strokeJoin(s.ROUND);
 
                     s.beginShape();
