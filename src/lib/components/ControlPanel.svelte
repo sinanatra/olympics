@@ -13,7 +13,7 @@
     function onQueryInput(event) {
         if (event.target.value.length > 3) {
             queryValue = event.target.value;
-            config.update((c) => ({ ...c, queryValue }));
+            // config.update((c) => ({ ...c, queryValue }));
         }
     }
 
