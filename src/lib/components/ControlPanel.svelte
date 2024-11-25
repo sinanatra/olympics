@@ -90,6 +90,10 @@
                 type: "name",
             });
         }
+
+        if (activeFilters.length == 0) {
+            resetQueries();
+        }
     }
 
     function removeFilter(filter) {
@@ -264,13 +268,6 @@
         );
     }
 
-    function getTotalParticipants(entities) {
-        return Object.values(entities).reduce(
-            (sum, entity) => sum + entity.dataPoints.length,
-            0,
-        );
-    }
-
     function pluralize(count, singular) {
         const irregularPlurals = {
             city: "cities",
@@ -300,12 +297,24 @@
     function getParticipantsGrouping(config) {
         return config.moveBy ? config.moveBy : "participants";
     }
+
+    function getTotalParticipants(entities) {
+        return Object.values(entities).reduce(
+            (sum, entity) => sum + entity.dataPoints.length,
+            0,
+        );
+    }
+
     $: methodologyText = (() => {
         const selectedCluster = getClusterInfo($config);
         const participantsGrouping = getParticipantsGrouping($config);
-        const totalParticipants = getTotalParticipants(filteredEntities);
 
-        let text = `This visualization represents ${totalParticipants} ${pluralize(totalParticipants, "participant")}, grouped by ${participantsGrouping} across ${selectedCluster}.`;
+        const totalParticipants =
+            $highlightedEntities.length == 0
+                ? getTotalParticipants(filteredEntities)
+                : $highlightedEntities.length;
+
+        let text = `This visualization clusters ${totalParticipants} ${pluralize(totalParticipants, "participant")}, based on ${pluralize(selectedCluster, selectedCluster)}.`;
 
         return text;
     })();
