@@ -78,12 +78,12 @@
                 type: "clusterValue",
             });
         }
-        if (queryValue) {
-            activeFilters.push({
-                label: `${queryValue}`,
-                type: "query",
-            });
-        }
+        // if (queryValue) {
+        //     activeFilters.push({
+        //         label: `${queryValue}`,
+        //         type: "query",
+        //     });
+        // }
         if ($highlightedEntities.length === 1) {
             activeFilters.push({
                 label: `${$highlightedEntities[0]}`,
@@ -386,10 +386,10 @@
         </div> -->
 
         <div class="filtered-entities">
-            <label>Filter {$config.moveBy}:</label>
+            <!-- <label>Filter {$config.moveBy}:</label> -->
             <input
                 type="text"
-                placeholder="Enter your query"
+                placeholder="Filter {$config.moveBy}..."
                 value={queryValue}
                 on:input={onQueryInput}
             />
@@ -479,15 +479,20 @@
         gap: 10px;
     }
 
+    input[type="text"]::placeholder {
+        color: var(--main-color);
+        opacity: 0.6;
+    }
+
     .filtered-entities input[type="text"] {
         font-size: 20px;
         color: var(--main-color);
         background: transparent;
         border: none;
-        border-bottom: 2px solid var(--main-color);
-        padding: 8px 0;
-        outline: none;
-        margin-bottom: 10px;
+        opacity: 0.6;
+        border: 1px solid;
+        padding: 6px;
+        background-color: black;
     }
 
     .options {
