@@ -300,22 +300,12 @@
     function getParticipantsGrouping(config) {
         return config.moveBy ? config.moveBy : "participants";
     }
-
     $: methodologyText = (() => {
         const selectedCluster = getClusterInfo($config);
         const participantsGrouping = getParticipantsGrouping($config);
         const totalParticipants = getTotalParticipants(filteredEntities);
 
-        let text = `This visualization represents ${totalParticipants} ${pluralize(participantsGrouping, "participant")}, as individual ${pluralize(participantsGrouping, participantsGrouping)}, who have changed  ${selectedCluster}.`;
-
-        if ($config.selectedClusterValue) {
-            text += ` The data is filtered by ${selectedCluster} = ${$config.selectedClusterValue}, showing`;
-        }
-
-        if ($highlightedEntities.length > 0) {
-            const highlightedCount = $highlightedEntities.length;
-            text += ` ${highlightedCount} ${pluralize(highlightedCount, "result")} matching the query.`;
-        }
+        let text = `This visualization represents ${totalParticipants} ${pluralize(totalParticipants, "participant")}, grouped by ${participantsGrouping} across ${selectedCluster}.`;
 
         return text;
     })();
