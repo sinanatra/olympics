@@ -59,12 +59,47 @@
         }, {});
 
     function selectOption(type, option) {
-        resetQueries();
-        highlightedEntities.set([]);
+        //resetQueries();
+
         if (type === "clusterBy") {
             config.update((c) => ({ ...c, clusterBy: option }));
         } else if (type === "moveBy") {
             config.update((c) => ({ ...c, moveBy: option }));
+        }
+    }
+
+    $: activeFilters = [];
+
+    $: {
+        activeFilters = [];
+        if ($config.selectedClusterValue) {
+            activeFilters.push({
+                label: `${$config.selectedClusterValue}`,
+                type: "clusterValue",
+            });
+        }
+        if (queryValue) {
+            activeFilters.push({
+                label: `${queryValue}`,
+                type: "query",
+            });
+        }
+        if ($highlightedEntities.length === 1) {
+            activeFilters.push({
+                label: `${$highlightedEntities[0]}`,
+                type: "name",
+            });
+        }
+    }
+
+    function removeFilter(filter) {
+        if (filter.type === "clusterValue") {
+            config.update((c) => ({ ...c, selectedClusterValue: null }));
+        } else if (filter.type === "query") {
+            queryValue = "";
+            config.update((c) => ({ ...c, queryValue: "" }));
+        } else if (filter.type === "name") {
+            highlightedEntities.set([]);
         }
     }
 
@@ -292,6 +327,14 @@
             {methodologyText}
         </div>
         <div class="header-buttons">
+            <div class="active-filters">
+                {#each activeFilters as filter}
+                    <span class="filter" on:click={() => removeFilter(filter)}>
+                        {filter.label}
+                        <button>x</button>
+                    </span>
+                {/each}
+            </div>
             <button class="reset" on:click={resetQueries}>Reset</button>
             <button class="copy-config" on:click={copyConfig}
                 >Copy Config</button
@@ -328,7 +371,7 @@
                 {/each}
             </div>
         </div>
-
+        <!-- 
         <div class="category">
             <label>Move By:</label>
             <div class="options">
@@ -341,7 +384,7 @@
                     </span>
                 {/each}
             </div>
-        </div>
+        </div> -->
 
         <div class="filtered-entities">
             <label>Filter {$config.moveBy}:</label>
@@ -500,5 +543,60 @@
         font-size: 0.8rem;
         padding: 10px;
         max-width: 500px;
+    }
+
+    .active-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        /* align-items: center; */
+    }
+
+    .filter {
+        background-color: var(--main-color);
+        color: black;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        align-items: center;
+    }
+
+    .filter:hover {
+        background-color: white;
+    }
+
+    .filter button {
+        background: none;
+        border: none;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .reset {
+        background-color: var(--main-color);
+        color: black;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        /* font-size: 16px; */
+    }
+
+    .reset:hover {
+        background-color: lightgray;
+    }
+
+    .copy-config {
+        background-color: var(--main-color);
+        color: black;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .copy-config:hover {
+        background-color: lightgray;
     }
 </style>
