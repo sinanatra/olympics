@@ -229,40 +229,57 @@
         );
     }
 
-    $: methodologyText = (() => {
-        const selectedCluster = $config.clusterBy
-            ? `changes in ${$config.clusterBy}`
-            : "all clusters";
-        const selectedParticipantsGrouping = $config.moveBy
-            ? `grouped by ${$config.moveBy}`
-            : "without specific grouping";
-
-        const selectedEntities = Object.values(filteredEntities);
-        const totalParticipants = selectedEntities.reduce(
+    function getTotalParticipants(entities) {
+        return Object.values(entities).reduce(
             (sum, entity) => sum + entity.dataPoints.length,
             0,
         );
+    }
 
-        const appliedClusterFilter = $config.selectedClusterValue
-            ? `filtered by the cluster value "${$config.selectedClusterValue}"`
-            : null;
+    function pluralize(count, singular) {
+        const irregularPlurals = {
+            city: "cities",
+            sport: "sports",
+            height: "heights",
+            noc: "NOCs",
+            team: "teams",
+            weight: "weights",
+            year: "years",
+            age: "ages",
+            event: "events",
+            medal: "medals",
+            name: "names",
+        };
 
-        const appliedEntityFilter =
-            $highlightedEntities.length > 0
-                ? `highlighting ${$highlightedEntities.length} entities matching the query`
-                : null;
+        if (count === 1) {
+            return singular;
+        }
 
-        const additionalFiltersText = [
-            appliedClusterFilter,
-            appliedEntityFilter,
-        ]
-            .filter(Boolean)
-            .join(" and ");
+        return irregularPlurals[singular] || `${singular}s`;
+    }
 
-        let text = `This visualization represents ${totalParticipants} participants ${selectedParticipantsGrouping}, with clusters reflecting ${selectedCluster}.`;
+    function getClusterInfo(config) {
+        return config.clusterBy ? config.clusterBy : "all clusters";
+    }
 
-        if (additionalFiltersText) {
-            text += ` The data is ${additionalFiltersText}.`;
+    function getParticipantsGrouping(config) {
+        return config.moveBy ? config.moveBy : "participants";
+    }
+
+    $: methodologyText = (() => {
+        const selectedCluster = getClusterInfo($config);
+        const participantsGrouping = getParticipantsGrouping($config);
+        const totalParticipants = getTotalParticipants(filteredEntities);
+
+        let text = `This visualization represents ${totalParticipants} ${pluralize(participantsGrouping, "participant")}, as individual ${pluralize(participantsGrouping, participantsGrouping)}, who have changed  ${selectedCluster}.`;
+
+        if ($config.selectedClusterValue) {
+            text += ` The data is filtered by ${selectedCluster} = ${$config.selectedClusterValue}, showing`;
+        }
+
+        if ($highlightedEntities.length > 0) {
+            const highlightedCount = $highlightedEntities.length;
+            text += ` ${highlightedCount} ${pluralize(highlightedCount, "result")} matching the query.`;
         }
 
         return text;
@@ -482,6 +499,6 @@
         opacity: 0.6;
         font-size: 0.8rem;
         padding: 10px;
-        max-width: 640px;
+        max-width: 500px;
     }
 </style>
