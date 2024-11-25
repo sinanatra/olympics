@@ -20,7 +20,7 @@
         const processedData = loadedData.map((row) => {
             const processedRow = {};
             for (const [key, value] of Object.entries(row)) {
-                processedRow[key] = value?.trim() ? value : "?";
+                processedRow[key] = value?.trim() ? value : "NA";
             }
             return processedRow;
         });
