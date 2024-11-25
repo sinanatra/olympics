@@ -228,12 +228,58 @@
                 (maxClusterCount - minClusterCount)
         );
     }
+
+    $: methodologyText = (() => {
+        const selectedCluster = $config.clusterBy
+            ? `changes in ${$config.clusterBy}`
+            : "all clusters";
+        const selectedParticipantsGrouping = $config.moveBy
+            ? `grouped by ${$config.moveBy}`
+            : "without specific grouping";
+
+        const selectedEntities = Object.values(filteredEntities);
+        const totalParticipants = selectedEntities.reduce(
+            (sum, entity) => sum + entity.dataPoints.length,
+            0,
+        );
+
+        const appliedClusterFilter = $config.selectedClusterValue
+            ? `filtered by the cluster value "${$config.selectedClusterValue}"`
+            : null;
+
+        const appliedEntityFilter =
+            $highlightedEntities.length > 0
+                ? `highlighting ${$highlightedEntities.length} entities matching the query`
+                : null;
+
+        const additionalFiltersText = [
+            appliedClusterFilter,
+            appliedEntityFilter,
+        ]
+            .filter(Boolean)
+            .join(" and ");
+
+        let text = `This visualization represents ${totalParticipants} participants ${selectedParticipantsGrouping}, with clusters reflecting ${selectedCluster}.`;
+
+        if (additionalFiltersText) {
+            text += ` The data is ${additionalFiltersText}.`;
+        }
+
+        return text;
+    })();
 </script>
 
 <header>
-    <div class="header-buttons">
-        <button class="reset" on:click={resetQueries}>Reset</button>
-        <button class="copy-config" on:click={copyConfig}>Copy Config</button>
+    <div class="header-info">
+        <div class="methodology">
+            {methodologyText}
+        </div>
+        <div class="header-buttons">
+            <button class="reset" on:click={resetQueries}>Reset</button>
+            <button class="copy-config" on:click={copyConfig}
+                >Copy Config</button
+            >
+        </div>
     </div>
     <div class="categories">
         <div class="category">
@@ -313,6 +359,14 @@
 </header>
 
 <style>
+    .header-info {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid;
+    }
+
     .header-buttons {
         display: flex;
         justify-content: flex-end;
@@ -421,5 +475,13 @@
     .reset:hover,
     .copy-config:hover {
         background-color: lightgray;
+    }
+    .methodology {
+        color: var(--main-color);
+        /* text-align: right; */
+        opacity: 0.6;
+        font-size: 0.8rem;
+        padding: 10px;
+        max-width: 640px;
     }
 </style>
