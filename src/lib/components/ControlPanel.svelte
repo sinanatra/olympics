@@ -438,12 +438,10 @@
         color: var(--main-color);
         padding: 10px;
         font-size: 20px;
-        overflow: scroll;
+        overflow: hidden;
     }
 
     label {
-        /* position: sticky;
-        top: 0; */
         opacity: 0.6;
         border-bottom: 1px solid;
         padding-bottom: 10px;
@@ -461,7 +459,6 @@
     .categories > div {
         flex: 1;
         flex: 0 0 20%;
-        /* max-height: 40vh; */
         margin-bottom: 5px;
     }
 
@@ -540,9 +537,9 @@
     .copy-config:hover {
         background-color: lightgray;
     }
+
     .methodology {
         color: var(--main-color);
-        /* text-align: right; */
         opacity: 0.6;
         font-size: 0.8rem;
         padding: 10px;
@@ -553,7 +550,6 @@
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
-        /* align-items: center; */
     }
 
     .filter {
@@ -584,7 +580,6 @@
         border: none;
         padding: 5px 10px;
         cursor: pointer;
-        /* font-size: 16px; */
     }
 
     .reset:hover {
@@ -602,5 +597,73 @@
 
     .copy-config:hover {
         background-color: lightgray;
+    }
+
+    @media (max-width: 768px) {
+        header {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .header-info {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .header-buttons {
+            justify-content: center;
+            gap: 10px;
+        }
+
+        header > .categories {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .categories > div {
+            flex: 1 0 auto;
+            margin-bottom: 10px;
+        }
+
+        .filtered-cluster-values label {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .options {
+            display: block;
+        }
+
+        .filtered-cluster-values .options span {
+            font-size: 18px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            white-space: nowrap;
+            display: inline-flex;
+        }
+
+        input[type="text"] {
+            font-size: 14px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .reset,
+        .copy-config {
+            font-size: 14px;
+            padding: 8px 12px;
+        }
+
+        .filter {
+            font-size: 14px;
+            padding: 8px 10px;
+        }
+
+        .methodology {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
     }
 </style>
