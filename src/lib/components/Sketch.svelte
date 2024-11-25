@@ -343,7 +343,7 @@
                 distSquared(lastPoint, currentPosition) >=
                     minSegmentLength * minSegmentLength
             ) {
-                if (trail.length >= 4) {
+                if (trail.length >= 2) {
                     trail.shift();
                 }
                 trail.push({ x: currentPosition.x, y: currentPosition.y });
