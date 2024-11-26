@@ -10,57 +10,71 @@
 
     let queryValue = $config.queryValue || "";
 
+    config.update((c) => ({ ...c, filters: c.filters || {} }));
+
     function onQueryInput(event) {
-        if (event.target.value.length > 3) {
-            queryValue = event.target.value;
-            // config.update((c) => ({ ...c, queryValue }));
-        }
+        queryValue = event.target.value;
+        config.update((c) => ({ ...c, queryValue }));
     }
 
-    const excludedClusterOptions = [];
-    const excludedMoveOptions = [];
+    $: reducedClusterOptions = filteredOptions;
 
-    $: reducedClusterOptions = filteredOptions.filter(
-        (option) => !excludedClusterOptions.includes(option),
-    );
-    $: reducedMoveOptions = clusterOptions.filter(
-        (option) => !excludedMoveOptions.includes(option),
-    );
+    $: uniqueClusterValues = (() => {
+        const clusterSet = new Set();
+        Object.values($entities).forEach((entityData) => {
+            entityData.dataPoints.forEach((dp) => {
+                const clusterValue = dp[$config.clusterBy];
+                if (clusterValue) {
+                    clusterSet.add(clusterValue);
+                }
+            });
+        });
+        return Array.from(clusterSet);
+    })();
 
-    $: uniqueClusterValues = $clusters.map(([clusterKey]) => clusterKey);
+    function entityMatchesFilters(entityData) {
+        const filters = $config.filters || {};
+        const dataPoints = entityData.dataPoints;
+
+        for (const [filterField, selectedValues] of Object.entries(filters)) {
+            if (!selectedValues || selectedValues.length === 0) continue;
+            const matchesField = dataPoints.some((dp) => {
+                const dpValue = dp[filterField]?.toString().toLowerCase();
+                return selectedValues.some(
+                    (value) => dpValue === value.toLowerCase(),
+                );
+            });
+            if (!matchesField) {
+                return false;
+            }
+        }
+
+        const query = $config.queryValue?.toLowerCase() || "";
+        if (query.length >= 3) {
+            const queryCategory = $config.queryCategory || "name";
+            const matchesQuery = dataPoints.some((dp) =>
+                dp[queryCategory]?.toString().toLowerCase().includes(query),
+            );
+            if (!matchesQuery) {
+                return false;
+            }
+        }
+
+        if ($highlightedEntities.length > 0) {
+            return $highlightedEntities.includes(entityData.moveBy);
+        }
+
+        return true;
+    }
 
     $: filteredEntities = Object.entries($entities)
-        .filter(([entityName, entityData]) => {
-            const matchesCluster = $config.selectedClusterValue
-                ? entityData.dataPoints.some(
-                      (dp) =>
-                          dp[$config.clusterBy]?.toString() ===
-                          $config.selectedClusterValue.toString(),
-                  )
-                : true;
-
-            const query = queryValue.toLowerCase();
-            const category = $config.queryCategory || "name";
-            const matchesQuery =
-                query.length >= 3
-                    ? entityData.dataPoints.some((dp) =>
-                          dp[category]
-                              ?.toString()
-                              .toLowerCase()
-                              .includes(query),
-                      )
-                    : true;
-
-            return matchesCluster && matchesQuery;
-        })
+        .filter(([entityName, entityData]) => entityMatchesFilters(entityData))
         .reduce((acc, [key, entityData]) => {
             acc[key] = entityData;
             return acc;
         }, {});
 
     function selectOption(type, option) {
-        //resetQueries();
-
         if (type === "clusterBy") {
             config.update((c) => ({ ...c, clusterBy: option }));
         } else if (type === "moveBy") {
@@ -69,76 +83,81 @@
     }
 
     $: activeFilters = [];
-
     $: {
         activeFilters = [];
-        if ($config.selectedClusterValue) {
-            activeFilters.push({
-                label: `${$config.selectedClusterValue}`,
-                type: "clusterValue",
-            });
-        }
-        // if (queryValue) {
-        //     activeFilters.push({
-        //         label: `${queryValue}`,
-        //         type: "query",
-        //     });
-        // }
-        if ($highlightedEntities.length === 1) {
-            activeFilters.push({
-                label: `${$highlightedEntities[0]}`,
-                type: "name",
-            });
+        const filters = $config.filters || {};
+        for (const [filterKey, filterValues] of Object.entries(filters)) {
+            for (const value of filterValues) {
+                activeFilters.push({ label: value, type: filterKey });
+            }
         }
 
-        if (activeFilters.length == 0) {
-            resetQueries();
+        if ($config.queryValue && $config.queryValue.length >= 3) {
+            activeFilters.push({ label: $config.queryValue, type: "query" });
+        }
+
+        if ($highlightedEntities.length === 1) {
+            activeFilters.push({
+                label: $highlightedEntities[0],
+                type: "name",
+            });
         }
     }
 
     function removeFilter(filter) {
-        if (filter.type === "clusterValue") {
-            config.update((c) => ({ ...c, selectedClusterValue: null }));
-        } else if (filter.type === "query") {
-            queryValue = "";
-            config.update((c) => ({ ...c, queryValue: "" }));
-        } else if (filter.type === "name") {
-            highlightedEntities.set([]);
-        }
+        config.update((c) => {
+            const newFilters = { ...c.filters };
+            if (filter.type === "query") {
+                c.queryValue = "";
+            } else if (filter.type === "name") {
+                highlightedEntities.update((list) => {
+                    return list.filter((entity) => entity !== filter.label);
+                });
+            } else {
+                const filterValues = newFilters[filter.type];
+                if (filterValues && filterValues.includes(filter.label)) {
+                    newFilters[filter.type] = filterValues.filter(
+                        (v) => v !== filter.label,
+                    );
+                    if (newFilters[filter.type].length === 0) {
+                        delete newFilters[filter.type];
+                    }
+                }
+            }
+            return { ...c, filters: newFilters };
+        });
     }
 
     function selectClusterValue(value) {
-        config.update((c) => ({ ...c, selectedClusterValue: value }));
+        const clusterBy = $config.clusterBy;
+        config.update((c) => {
+            const newFilters = { ...c.filters };
+            const currentValue = newFilters[clusterBy]?.[0];
 
-        const query = queryValue.toLowerCase();
-        const category = $config.queryCategory || "name";
-        const tempHighlightedEntities = [];
-
-        Object.entries(get(entities)).forEach(([entityName, entityData]) => {
-            const matchesCluster = entityData.dataPoints.some(
-                (dp) => dp[$config.clusterBy]?.toString() === value.toString(),
-            );
-
-            const matchesQuery = entityData.dataPoints.some((dp) =>
-                dp[category]?.toString().toLowerCase().includes(query),
-            );
-
-            if (matchesCluster && matchesQuery) {
-                tempHighlightedEntities.push(entityName);
-                entityData.currentCategoryIndex = 0;
-                entityData.t = 0;
-                entityData.trail = [];
+            if (currentValue === value) {
+                delete newFilters[clusterBy];
+            } else {
+                newFilters[clusterBy] = [value];
             }
-        });
 
-        highlightedEntities.set(tempHighlightedEntities);
+            return { ...c, filters: newFilters };
+        });
+    }
+
+    function selectEntity(entityName) {
+        highlightedEntities.update((list) => {
+            if (!list.includes(entityName)) {
+                list.push(entityName);
+            }
+            return list;
+        });
     }
 
     function resetQueries() {
         config.update((c) => ({
             ...c,
             queryValue: "",
-            selectedClusterValue: null,
+            filters: {},
         }));
         queryValue = "";
         highlightedEntities.set([]);
@@ -153,13 +172,13 @@
             config: {
                 clusterBy: $config.clusterBy,
                 moveBy: $config.moveBy,
-                selectedClusterValue: $config.selectedClusterValue || "",
+                filters: $config.filters,
                 queryValue: queryValue,
                 queryCategory: $config.queryCategory || "name",
                 speed: $config.speed || 3,
                 stroke: $config.stroke || 1,
                 loops: $config.loopsToComplete || 1,
-                highlightedEntities: get(highlightedEntities), //.join(","),
+                highlightedEntities: get(highlightedEntities),
             },
         };
 
@@ -178,14 +197,21 @@
     const minFontSize = 12;
     const maxFontSize = 30;
 
-    $: entitiesList = Object.entries(filteredEntities).map(
+    $: entitiesList = Object.entries(filteredEntities || {}).map(
         ([entityName, entityData]) => [
             entityName,
             entityData.dataPoints.length,
         ],
     );
 
+    $: allParticipants = entitiesList.map(([name, value]) => name);
     $: allValues = entitiesList.map(([_, value]) => value);
+
+    $: {
+        if (Object.entries($entities).length != allParticipants.length) {
+            $highlightedEntities = allParticipants;
+        }
+    }
 
     $: minValue = allValues.length > 0 ? Math.min(...allValues) : 0;
     $: maxValue = allValues.length > 0 ? Math.max(...allValues) : 1;
@@ -205,48 +231,17 @@
     const maxClusterFontSize = 30;
 
     $: clusterValuesList = (() => {
-        const entitiesArray = Object.values($entities);
-
-        const highlightedSet = new Set($highlightedEntities);
-        const isHighlightActive = highlightedSet.size > 0;
-
-        let clustersToUse = uniqueClusterValues;
-        const result = [];
-
-        if (isHighlightActive) {
-            clustersToUse = uniqueClusterValues.filter((clusterValue) => {
-                for (let i = 0; i < entitiesArray.length; i++) {
-                    const entity = entitiesArray[i];
-                    if (
-                        highlightedSet.has(entity.moveBy) &&
-                        entity.categories.includes(clusterValue)
-                    ) {
-                        return true;
-                    }
+        const clusterValueCounts = {};
+        Object.values(filteredEntities).forEach((entityData) => {
+            entityData.dataPoints.forEach((dp) => {
+                const clusterValue = dp[$config.clusterBy];
+                if (clusterValue) {
+                    clusterValueCounts[clusterValue] =
+                        (clusterValueCounts[clusterValue] || 0) + 1;
                 }
-                return false;
             });
-        }
-
-        for (let i = 0; i < clustersToUse.length; i++) {
-            const clusterValue = clustersToUse[i];
-            let count = 0;
-
-            for (let j = 0; j < entitiesArray.length; j++) {
-                const entity = entitiesArray[j];
-
-                if (
-                    (!isHighlightActive || highlightedSet.has(entity.moveBy)) &&
-                    entity.categories.includes(clusterValue)
-                ) {
-                    count++;
-                }
-            }
-
-            result.push([clusterValue, count]);
-        }
-
-        return result;
+        });
+        return Object.entries(clusterValueCounts);
     })();
 
     $: clusterCounts = clusterValuesList.map(([_, count]) => count);
@@ -294,27 +289,14 @@
         return config.clusterBy ? config.clusterBy : "all clusters";
     }
 
-    function getParticipantsGrouping(config) {
-        return config.moveBy ? config.moveBy : "participants";
-    }
-
-    function getTotalParticipants(entities) {
-        return Object.values(entities).reduce(
-            (sum, entity) => sum + entity.dataPoints.length,
-            0,
-        );
-    }
-
     $: methodologyText = (() => {
         const selectedCluster = getClusterInfo($config);
-        const participantsGrouping = getParticipantsGrouping($config);
+        const totalParticipants = Object.keys(filteredEntities).length;
 
-        const totalParticipants =
-            $highlightedEntities.length == 0
-                ? getTotalParticipants(filteredEntities)
-                : $highlightedEntities.length;
-
-        let text = `This visualization clusters ${totalParticipants} ${pluralize(totalParticipants, "participant")}, based on ${pluralize(selectedCluster, selectedCluster)}.`;
+        let text = `This visualization clusters ${totalParticipants} ${pluralize(
+            totalParticipants,
+            "participant",
+        )}, based on ${selectedCluster}.`;
 
         return text;
     })();
@@ -326,15 +308,16 @@
             {methodologyText}
         </div>
         <div class="header-buttons">
-            <div class="active-filters">
+            <div class="active-filters" on:click={resetQueries}>
                 {#each activeFilters as filter}
-                    <span class="filter" on:click={() => removeFilter(filter)}>
+                    <span class="filter">
+                        <!-- <span class="filter" on:click={() => removeFilter(filter)}> -->
                         {filter.label}
-                        <button>x</button>
                     </span>
+                    <!-- <button>x</button> -->
                 {/each}
+                <button class="reset" on:click={resetQueries}>Reset</button>
             </div>
-            <button class="reset" on:click={resetQueries}>Reset</button>
             <button class="copy-config" on:click={copyConfig}
                 >Copy Config</button
             >
@@ -361,8 +344,9 @@
                 {#each clusterValuesList as [value, count]}
                     <span
                         style="font-size: {getClusterFontSize(count)}px;"
-                        class:highlighted={value ==
-                            $config.selectedClusterValue}
+                        class:selected={$config.filters[
+                            $config.clusterBy
+                        ]?.[0] === value}
                         on:click={() => selectClusterValue(value)}
                     >
                         {value}
@@ -533,11 +517,6 @@
         font-size: 16px;
     }
 
-    .reset:hover,
-    .copy-config:hover {
-        background-color: lightgray;
-    }
-
     .methodology {
         color: var(--main-color);
         opacity: 0.6;
@@ -549,22 +528,31 @@
     .active-filters {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 0px;
+    }
+
+    .active-filters > span:last-of-type {
+        border-right: 1px solid black;
+    }
+
+    .reset:hover,
+    .active-filters:hover *,
+    .copy-config:hover {
+        background-color: lightgray;
     }
 
     .filter {
         background-color: var(--main-color);
         color: black;
         border: none;
-        padding: 10px;
+        padding: 5px 10px;
         cursor: pointer;
         font-size: 16px;
-        align-items: center;
     }
 
-    .filter:hover {
+    /* .filter:hover {
         background-color: white;
-    }
+    } */
 
     .filter button {
         background: none;
