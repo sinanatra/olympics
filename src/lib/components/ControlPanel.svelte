@@ -92,9 +92,9 @@
             }
         }
 
-        if ($config.queryValue && $config.queryValue.length >= 3) {
+        /*if ($config.queryValue && $config.queryValue.length >= 3) {
             activeFilters.push({ label: $config.queryValue, type: "query" });
-        }
+        }*/
 
         if ($highlightedEntities.length === 1) {
             activeFilters.push({
