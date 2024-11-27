@@ -276,6 +276,7 @@
             event: "events",
             medal: "medals",
             name: "names",
+            is: "are",
         };
 
         if (count === 1) {
@@ -291,12 +292,37 @@
 
     $: methodologyText = (() => {
         const selectedCluster = getClusterInfo($config);
-        const totalParticipants = Object.keys(filteredEntities).length;
 
-        let text = `This visualization clusters ${totalParticipants} ${pluralize(
-            totalParticipants,
-            "participant",
-        )}, based on ${selectedCluster}.`;
+        const totalParticipants =
+            $highlightedEntities.length > 0
+                ? $highlightedEntities.length
+                : allParticipants.length;
+
+        let text = "";
+
+        if (activeFilters.length > 0) {
+            const nameFilter = activeFilters.find(
+                (item) => item.type === "name",
+            );
+
+            if (nameFilter && activeFilters.length === 1) {
+                text = `${nameFilter.label} is shown moving across ${selectedCluster}`;
+            } else {
+                const details = activeFilters
+                    .map((item) => {
+                        if (item.type === "name") {
+                            return item.label;
+                        } else {
+                            return `${item.type}:${item.label}`;
+                        }
+                    })
+                    .join(", ");
+
+                text = `${totalParticipants} ${pluralize(totalParticipants, "participant")}s [${details}]  ${pluralize(totalParticipants, "is")} seen moving across ${selectedCluster}`;
+            }
+        } else {
+            text = `${totalParticipants}  ${pluralize(totalParticipants, "participant")}  ${pluralize(totalParticipants, "is")} grouped by ${selectedCluster}`;
+        }
 
         return text;
     })();
