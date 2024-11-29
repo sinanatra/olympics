@@ -318,7 +318,7 @@
                     })
                     .join(", ");
 
-                text = `${totalParticipants} ${pluralize(totalParticipants, "participant")}s [${details}]  ${pluralize(totalParticipants, "is")} seen moving across ${selectedCluster}`;
+                text = `${totalParticipants} ${pluralize(totalParticipants, "participant")} [${details}]  ${pluralize(totalParticipants, "is")} seen moving across ${selectedCluster}`;
             }
         } else {
             text = `${totalParticipants}  ${pluralize(totalParticipants, "participant")}  ${pluralize(totalParticipants, "is")} grouped by ${selectedCluster}`;
