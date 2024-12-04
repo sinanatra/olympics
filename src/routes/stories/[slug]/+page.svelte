@@ -116,6 +116,9 @@
 <style>
     .sketch {
         min-height: 600px;
+        position: sticky;
+        top: 0;
+        z-index: -1;
     }
 
     .loading {
@@ -130,7 +133,7 @@
         display: flex;
         flex-direction: column;
         gap: 20px;
-        font-size: 12px;
+        font-size: 18px;
     }
 
     .content {
@@ -178,14 +181,14 @@
     }
 
     .athlete p {
-        max-width: 35px;
-        font-size: 0.4rem;
+        max-width: 135px;
+        font-size: .9em;
         opacity: 0.6;
         word-break: break-word;
     }
     .athlete img {
-        max-width: 40px;
-        max-height: 40px;
+        max-width: 140px;
+        max-height: 140px;
         object-fit: cover;
         width: 100%;
         filter: grayscale(100%);
