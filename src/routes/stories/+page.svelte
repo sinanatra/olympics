@@ -35,7 +35,7 @@
         background-color: white;
         border-radius: 10px;
         min-height: 250px;
-        max-width: 350px;
+        max-width: 20vw;
     }
 
     a {
