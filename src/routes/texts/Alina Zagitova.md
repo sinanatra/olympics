@@ -15,7 +15,7 @@
     "queryValue": "Alina Zagitova",
     "queryCategory": "name",
     "speed": 3,
-    "stroke": 1,
+    "stroke": 5,
     "loops": 1,
     "highlightedEntities": [
       "alina zagitova"

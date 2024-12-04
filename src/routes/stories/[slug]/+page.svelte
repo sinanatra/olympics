@@ -29,7 +29,7 @@
             base + "/data/update-until-2022/data.tsv",
         );
 
-         const processedData = loadedTSVData.map((row) => {
+        const processedData = loadedTSVData.map((row) => {
             const processedRow = {};
             for (const [key, value] of Object.entries(row)) {
                 processedRow[key] = value?.trim() ? value : "NA";
@@ -69,6 +69,11 @@
                 <h1>{@html datum?.meta.title}</h1>
             </div>
             <div class="content">
+                {#if datum.text}
+                    <div class="description">
+                        {@html datum.text}
+                    </div>
+                {/if}
                 {#if datum?.meta.media}
                     {#if datum.meta.config.highlightedEntities}
                         <div class="medias">
@@ -100,11 +105,6 @@
                             {/each}
                         </div>
                     {/if}
-                {/if}
-                {#if datum.text}
-                    <div class="description">
-                        {@html datum.text}
-                    </div>
                 {/if}
             </div>
         </div>
@@ -169,6 +169,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
+        min-width: 250px;
     }
 
     a {
