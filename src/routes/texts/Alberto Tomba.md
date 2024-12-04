@@ -1,7 +1,7 @@
 ---
 {
-  "title": "",
-  "description": "",
+  "title": "Alberto Tomba",
+  "description": "Alberto Tomba, the charismatic Italian alpine skiing legend, left an indelible mark on the Winter Olympics through his performances across four iconic cities.",
   "methodology": "",
   "media": true,
   "config": {

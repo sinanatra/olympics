@@ -1,7 +1,7 @@
 ---
 {
-  "title": "",
-  "description": "",
+  "title": "Amos Mosaner",
+  "description": "Amos Mosaner, a curler from Trento, etched his name into history alongside his partner Stefania Constantini by winning Italy’s first-ever gold medal in curling at the 2022 Beijing Winter Olympics.",
   "methodology": "",
   "media": true,
   "config": {

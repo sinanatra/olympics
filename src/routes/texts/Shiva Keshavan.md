@@ -1,7 +1,7 @@
 ---
 {
-  "title": "",
-  "description": "",
+  "title": "Shiva Keshavan",
+  "description": "Shiva Keshavan, India’s pioneering luge athlete, made history not just for his sport but also for his unique Olympic journey.",
   "methodology": "",
   "media": true,
   "config": {

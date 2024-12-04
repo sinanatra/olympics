@@ -1,7 +1,7 @@
 ---
 {
-  "title": "",
-  "description": "",
+  "title": "Arturo Kinch",
+  "description": "Arturo Kinch, a trailblazer for athletes from tropical nations, made history as a cross-country skier and alpine skier representing Costa Rica in the Winter Olympics.",
   "methodology": "",
   "media": true,
   "config": {

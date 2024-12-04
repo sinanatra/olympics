@@ -1,7 +1,7 @@
 ---
 {
-  "title": "",
-  "description": "",
+  "title": "Stefania Constantini",
+  "description": "Stefania Constantini, a curler from Cortina d’Ampezzo, made history with her partner Amos Mosaner from Trento by winning Italy’s first-ever gold medal in curling at the 2022 Beijing Winter Olympics.",
   "methodology": "",
   "media": true,
   "config": {
