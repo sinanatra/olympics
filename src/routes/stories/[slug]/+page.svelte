@@ -136,11 +136,11 @@
         font-size: 18px;
     }
 
-    .content {
+    /* .content {
         column-count: 2;
         column-gap: 40px;
         column-width: 800px;
-    }
+    } */
 
     .description {
         break-inside: avoid;
