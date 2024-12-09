@@ -137,10 +137,26 @@
     }
 
     .content {
-        display: flex;
-        /* display: grid;
-        grid-template-columns: 2fr 1fr; */
-        gap: 20px;
+        column-count: 2;
+        column-gap: 40px;
+        column-width: 800px;
+    }
+
+    .description {
+        break-inside: avoid;
+        margin-bottom: 20px;
+    }
+
+    :global(.description hr ~ p) {
+        color: var(--second-color);
+    }
+
+    :global(hr) {
+        visibility: hidden;
+        break-after: column;
+        border: none;
+        border-top: 2px solid var(--main-color);
+        margin: 20px 0;
     }
 
     .description {
@@ -182,10 +198,11 @@
 
     .athlete p {
         max-width: 135px;
-        font-size: .9em;
+        font-size: 0.9em;
         opacity: 0.6;
         word-break: break-word;
     }
+
     .athlete img {
         max-width: 140px;
         max-height: 140px;

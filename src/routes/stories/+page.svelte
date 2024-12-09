@@ -7,15 +7,8 @@
 <main>
     {#each data.posts as d}
         <a href={d.path.replace("/texts/", "")} data-sveltekit-reload>
-            <div
-                style="background-color: hsl(
-                    {colorMap[d.meta.config.clusterBy]?.start[0]},
-                    {colorMap[d.meta.config.clusterBy]?.start[1]}%,
-                    {colorMap[d.meta.config.clusterBy]?.start[2]}% );"
-            >
-                <h1>
-                    {@html d.meta.title}
-                </h1>
+            <div class="grid-container">
+                <h1>{@html d.meta.title}</h1>
                 <p>{@html d.meta.description}</p>
             </div>
         </a>
@@ -27,23 +20,39 @@
         padding: 20px;
         display: flex;
         flex-wrap: wrap;
-        gap: 20px;
-    }
-
-    div {
-        padding: 10px;
-        background-color: white;
-        border-radius: 10px;
-        min-height: 250px;
-        max-width: 20vw;
+        gap: 10px;
     }
 
     a {
         color: black;
         text-decoration: none;
+        width: 100%;
     }
 
-    a:hover div {
+    a:hover .grid-container {
         box-shadow: inset 0px 0px 2px 2px black;
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 20px;
+        align-items: start;
+        background-color: white;
+        border-radius: 10px;
+        padding: 10px;
+        min-height: 100px;
+    }
+
+    .grid-container > * {
+        max-width: 750px;
+    }
+
+    h1 {
+        margin: 0;
+    }
+
+    p {
+        margin: 0;
     }
 </style>

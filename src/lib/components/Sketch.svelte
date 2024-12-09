@@ -48,6 +48,7 @@
             s.colorMode(s.HSL);
             s.background(0);
             s.frameRate(30);
+        
 
             if (get(data).length > 0) {
                 processClusters();
@@ -557,7 +558,9 @@
         configData,
         randomizeClustersData,
     ) {
-        s.fill(...(colorMap[configData.clusterBy]?.start || [0, 0, 40]));
+        // s.fill(...(colorMap[configData.clusterBy]?.start || [0, 0, 40]));
+        s.fill(...(colorMap[configData.clusterBy]?.end || [0, 0, 40]));
+
         s.noStroke();
         s.textFont(font);
 
