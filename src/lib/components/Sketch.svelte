@@ -56,7 +56,7 @@
         };
 
         s.draw = () => {
-            s.background(0, 0.05);
+            s.background(0, 0.1);
 
             const entitiesData = get(entities);
             const clustersData = get(clusters);
@@ -279,18 +279,21 @@
         const startClusterKey = categories[currentIndex % categories.length];
         const endClusterKey =
             categories[(currentIndex + 1) % categories.length];
-        
-            const startPos = clusterPositionsData[startClusterKey];
+        const startPos = clusterPositionsData[startClusterKey];
         const endPos = clusterPositionsData[endClusterKey];
 
         if (startPos && endPos) {
-            const strokeColor = getStrokeColor(
-                s,
-                entityData,
-                colorConfig,
-                t,
-                entityData.isGoingBack,
-            );
+            const strokeColor = entityData.isGoingBack
+                ? [0, 0, 40]
+                : getStrokeColor(
+                      s,
+                      entityData,
+                      colorConfig,
+                      t,
+                      entityData.isGoingBack,
+                  );
+
+            strokeWeightValue = entityData.isGoingBack ? 0.5 : get(stroke);
 
             s.stroke(isEntityHighlighted ? [...strokeColor] : [0, 0, 40]);
             s.strokeWeight(isEntityHighlighted ? strokeWeightValue : 0.5);
@@ -348,8 +351,8 @@
                 t = 0;
                 entityData.currentCategoryIndex =
                     (currentIndex + 1) % categories.length;
-                if (entityData.currentCategoryIndex === 0) {
-                    entityData.loopsCompleted += 1;
+
+                if (entityData.currentCategoryIndex == categories.length - 1) {
                     entityData.isGoingBack = true;
                 } else {
                     entityData.isGoingBack = false;
@@ -419,7 +422,6 @@
             const startPos = clusterPositionsData[clusterKey];
             const endPos = startPos;
 
-            
             if (clusterKey && count && startPos) {
                 if (!trails[clusterKey]) {
                     trails[clusterKey] = {
