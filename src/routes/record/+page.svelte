@@ -5,6 +5,7 @@
     import { data, width, height, config, stroke } from "$lib/stores.js";
     import Sketch from "$lib/components/Sketch.svelte";
     import ControlPanel from "$lib/components/ControlPanel.svelte";
+    import ExportControls from "$lib/components/ExportControls.svelte";
 
     import { tsv } from "d3-fetch";
 
@@ -28,12 +29,8 @@
 
         data.set(processedData);
 
-        width.set(window.innerWidth);
-        height.set(600);
-
-        // test
-        // width.set(3240);
-        // height.set(1080);
+        width.set(3240);
+        height.set(1080);
     });
 </script>
 
@@ -45,6 +42,7 @@
     {:else}
         <p>Loading...</p>
     {/if}
+    <div><ExportControls /></div>
     <div>
         <ControlPanel />
     </div>

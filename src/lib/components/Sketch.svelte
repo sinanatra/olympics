@@ -19,6 +19,7 @@
         height,
         fontLoaded,
         stationaryCounts,
+        canvasStore,
     } from "$lib/stores.js";
     import { colorMap } from "$lib/constants.js";
 
@@ -44,12 +45,12 @@
         };
 
         s.setup = () => {
-            s.createCanvas(get(width), get(height));
+            const canvas = s.createCanvas(get(width), get(height));
+            canvasStore.set(canvas.canvas);
+            // canvasStore.set(canvas.elt)
             s.colorMode(s.HSL);
             s.background(0);
             s.frameRate(30);
-        
-
             if (get(data).length > 0) {
                 processClusters();
                 updateEntityPositions();
@@ -558,7 +559,6 @@
         configData,
         randomizeClustersData,
     ) {
-        // s.fill(...(colorMap[configData.clusterBy]?.start || [0, 0, 40]));
         s.fill(...(colorMap[configData.clusterBy]?.end || [0, 0, 40]));
 
         s.noStroke();

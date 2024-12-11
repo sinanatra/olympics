@@ -17,13 +17,16 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@ffmpeg/ffmpeg": "^0.12.10",
 		"@sveltejs/adapter-static": "^3.0.6",
+		"ccapture.js": "^1.1.0",
 		"d3-collection": "^1.0.7",
 		"d3-fetch": "^3.0.1",
 		"gh-pages": "^6.2.0",
 		"mdsvex": "^0.12.3",
 		"p5-svelte": "^3.1.2",
 		"preprocess": "^3.2.0",
+		"recordrtc": "^5.6.2",
 		"svelte-preprocess": "^6.0.3"
 	}
 }
