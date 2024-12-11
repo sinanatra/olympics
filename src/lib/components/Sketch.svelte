@@ -33,7 +33,6 @@
         $curves
     ) {
         processClusters();
-        updateEntityPositions();
         process.set(false);
     }
 
@@ -47,18 +46,17 @@
         s.setup = () => {
             const canvas = s.createCanvas(get(width), get(height));
             canvasStore.set(canvas.canvas);
-            // canvasStore.set(canvas.elt)
+
             s.colorMode(s.HSL);
             s.background(0);
             s.frameRate(30);
             if (get(data).length > 0) {
                 processClusters();
-                updateEntityPositions();
             }
         };
 
         s.draw = () => {
-            s.background(0, 0.1);
+            s.background(0, 0.05);
 
             const entitiesData = get(entities);
             const clustersData = get(clusters);
@@ -78,7 +76,6 @@
 
             if (get(process)) {
                 processClusters();
-                updateEntityPositions();
                 process.set(false);
             }
 
@@ -173,7 +170,7 @@
                     moveBy: entityName,
                     dataPoints: [],
                     currentCategoryIndex: 0,
-                    position: { x: 0, y: 0 },
+                    position: null,
                     t: 0,
                     isStationary: true,
                     trail: [],
@@ -194,7 +191,6 @@
         });
 
         entities.set(tempEntities);
-
         clusters.set(
             Array.from(clusterMap.entries()).sort(([keyA], [keyB]) =>
                 !isNaN(keyA) && !isNaN(keyB)
@@ -202,6 +198,8 @@
                     : keyA.localeCompare(keyB),
             ),
         );
+
+        updateEntityPositions();
     }
 
     function updateEntityPositions() {
@@ -215,19 +213,9 @@
 
         get(clusters).forEach(([clusterKey], i) => {
             const angle = startAngle + (i / totalClusters) * Math.PI * 2;
-            const position = get(randomizeClusters)
-                ? {
-                      x: margin + Math.random() * (get(width) - 2 * margin),
-                      y: margin + Math.random() * (get(height) - 2 * margin),
-                  }
-                : {
-                      x: get(width) / 2 + xRadius * Math.cos(angle),
-                      y: get(height) / 2 + yRadius * Math.sin(angle),
-                  };
-
             tempClusterPositions[clusterKey] = {
-                x: position.x,
-                y: position.y,
+                x: get(width) / 2 + xRadius * Math.cos(angle),
+                y: get(height) / 2 + yRadius * Math.sin(angle),
             };
         });
 
@@ -255,6 +243,8 @@
         });
 
         entities.set(tempEntities);
+        drawStationaryEntityLoops.trails = {};
+
         stationaryCounts.set(stationaryEntityCounts);
     }
 
@@ -269,7 +259,7 @@
         configData,
         highlightedEntitiesData,
     ) {
-        if (entityData.isStationary) {
+        if (entityData.isStationary || !entityData.position) {
             return;
         }
 
@@ -289,7 +279,8 @@
         const startClusterKey = categories[currentIndex % categories.length];
         const endClusterKey =
             categories[(currentIndex + 1) % categories.length];
-        const startPos = clusterPositionsData[startClusterKey];
+        
+            const startPos = clusterPositionsData[startClusterKey];
         const endPos = clusterPositionsData[endClusterKey];
 
         if (startPos && endPos) {
@@ -306,7 +297,7 @@
             s.noFill();
             s.strokeJoin(s.ROUND);
 
-            let currentPosition = { x: 0, y: 0 };
+            let currentPosition = { x: null, y: null };
             if (curvesData) {
                 const offsetRadius = 25;
                 const controlPoint1 = {
@@ -426,11 +417,13 @@
         Object.keys(stationaryCountsData).forEach((clusterKey) => {
             const count = stationaryCountsData[clusterKey];
             const startPos = clusterPositionsData[clusterKey];
+            const endPos = startPos;
 
-            if (startPos) {
+            
+            if (clusterKey && count && startPos) {
                 if (!trails[clusterKey]) {
                     trails[clusterKey] = {
-                        t: 0,
+                        t: null,
                         trail: [],
                         isGoingBack: false,
                     };
@@ -440,15 +433,10 @@
                 clusterTrail.t += speedFactor;
 
                 if (clusterTrail.t > 1) {
-                    clusterTrail.t = 0;
+                    clusterTrail.t = null;
                 }
 
                 const offsetRadius = 25;
-                const controlPoint = {
-                    x: startPos.x - offsetRadius,
-                    y: startPos.y - offsetRadius,
-                };
-                const endPos = startPos;
 
                 const t = clusterTrail.t;
 
@@ -478,9 +466,6 @@
                         endPos.y,
                         t,
                     );
-                } else {
-                    currentPosition.x = s.lerp(startPos.x, endPos.x, t);
-                    currentPosition.y = s.lerp(startPos.y, endPos.y, t);
                 }
 
                 const minSegmentLength = 1;
