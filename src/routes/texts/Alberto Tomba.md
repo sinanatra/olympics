@@ -2,7 +2,7 @@
 {
   "title": "Alberto Tomba",
   "description": "Alberto Tomba, the charismatic Italian alpine skiing legend, left an indelible mark on the Winter Olympics through his performances across four iconic cities.",
-  "methodology": "",
+  "methodology": "Highlighted Tomba's movements across the Olympic cities where he competed",
   "media": false,
   "config": {
     "clusterBy": "city",
@@ -10,8 +10,8 @@
     "filters": {},
     "queryValue": "tomba",
     "queryCategory": "name",
-    "speed": 3,
-    "stroke": 5,
+    "speed": 5,
+    "stroke": 10,
     "loops": 1,
     "highlightedEntities": [
       "alberto tomba"

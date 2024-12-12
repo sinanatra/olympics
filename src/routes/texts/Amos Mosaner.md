@@ -10,8 +10,8 @@
     "filters": {},
     "queryValue": "mosaner",
     "queryCategory": "name",
-    "speed": 3,
-    "stroke": 5,
+    "speed": 5,
+    "stroke": 10,
     "loops": 1,
     "highlightedEntities": [
       "amos mosaner"

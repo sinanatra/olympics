@@ -293,7 +293,7 @@
                       entityData.isGoingBack,
                   );
 
-            strokeWeightValue = entityData.isGoingBack ? 0.5 : get(stroke);
+            strokeWeightValue = entityData.isGoingBack ? 0.5 : strokeWeightValue;
 
             s.stroke(isEntityHighlighted ? [...strokeColor] : [0, 0, 40]);
             s.strokeWeight(isEntityHighlighted ? strokeWeightValue : 0.5);
@@ -334,6 +334,7 @@
             const trail = entityData.trail || [];
             const lastPoint = trail[trail.length - 1];
             const minSegmentLength = 1;
+
             if (
                 !lastPoint ||
                 distSquared(lastPoint, currentPosition) >=
@@ -354,6 +355,12 @@
 
                 if (entityData.currentCategoryIndex == categories.length - 1) {
                     entityData.isGoingBack = true;
+                    if (
+                        $markEntityLoopComplete !== true &&
+                        !entityData.isStationary
+                    ) {
+                        $markEntityLoopComplete = true;
+                    }
                 } else {
                     entityData.isGoingBack = false;
                 }

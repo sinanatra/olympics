@@ -4,6 +4,7 @@
         highlightedEntities,
         entities,
         clusters,
+        filters,
     } from "$lib/stores.js";
     import { clusterOptions, filteredOptions } from "$lib/constants.js";
     import { get } from "svelte/store";
@@ -241,6 +242,7 @@
                 }
             });
         });
+        $filters = Object.entries(clusterValueCounts);
         return Object.entries(clusterValueCounts);
     })();
 
