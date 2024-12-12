@@ -293,7 +293,7 @@
                       entityData.isGoingBack,
                   );
 
-            strokeWeightValue = entityData.isGoingBack ? 0.5 : strokeWeightValue;
+            strokeWeightValue = entityData.isGoingBack ? strokeWeightValue / 3 : strokeWeightValue;
 
             s.stroke(isEntityHighlighted ? [...strokeColor] : [0, 0, 40]);
             s.strokeWeight(isEntityHighlighted ? strokeWeightValue : 0.5);
