@@ -29,25 +29,24 @@
 
         data.set(processedData);
 
-       
         width.set(3840);
         height.set(2160);
     });
 </script>
 
-<main>
-    {#if $data.length > 0}
+{#if $data.length > 0}
+    <main>
         <div>
             <Sketch />
         </div>
-    {:else}
-        <p>Loading...</p>
-    {/if}
-    <div><ExportControls /></div>
-    <div>
-        <ControlPanel />
-    </div>
-</main>
+        <div><ExportControls /></div>
+        <div>
+            <ControlPanel />
+        </div>
+    </main>
+{:else}
+    <p>...</p>
+{/if}
 
 <style>
     div {
@@ -56,6 +55,7 @@
     }
     p {
         height: 100vh;
+        margin: 0;
         padding: 10px;
     }
 </style>

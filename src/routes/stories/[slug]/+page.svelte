@@ -19,11 +19,30 @@
         d.path.includes($page.params.slug),
     );
 
+    let nextPost = null;
+    let prevPost = null;
+
+    if (datum) {
+        const currentIndex = loadedData.posts.findIndex((d) =>
+            d.path.includes($page.params.slug),
+        );
+
+        nextPost = loadedData.posts[currentIndex + 1] || null;
+        prevPost = loadedData.posts[currentIndex - 1] || null;
+
+        config.update((c) => ({
+            ...c,
+            ...datum.meta.config,
+        }));
+
+        highlightedEntities.set(datum.meta.config.highlightedEntities || []);
+    }
+
     let athletes = [];
 
     onMount(async () => {
         width.set(window.innerWidth);
-        height.set(600);
+        height.set(800);
 
         const loadedTSVData = await tsv(
             base + "/data/update-until-2022/data.tsv",
@@ -53,8 +72,27 @@
     }
 </script>
 
-<main>
-    {#if datum != undefined && $storeData.length > 0 && athletes.length > 0}
+{#if datum != undefined && $storeData.length > 0 && athletes.length > 0}
+    <header>
+        <div class="navigation" data-sveltekit-reload>
+            {#if prevPost}
+                <a
+                    class="prev"
+                    href="{base}/stories/{prevPost.path.replace('/texts/', '')}"
+                    >←</a
+                >
+            {/if}
+            {#if nextPost}
+                <a
+                    class="next"
+                    href="{base}/stories/{nextPost.path.replace('/texts/', '')}"
+                >
+                    →</a
+                >
+            {/if}
+        </div>
+    </header>
+    <main>
         <div class="sketch">
             <Sketch />
         </div>
@@ -108,20 +146,29 @@
                 {/if}
             </div>
         </div>
-    {:else}
-        <p class="loading">Loading...</p>
-    {/if}
-</main>
+    </main>
+{/if}
 
 <style>
     .sketch {
-        min-height: 600px;
+        min-height: 800px;
         position: sticky;
         top: 0;
         z-index: -1;
     }
 
+    .navigation {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+        font-size: 1.5rem;
+        line-height: 0.5;
+    }
+
     .loading {
+        margin: 0;
         padding: 10px;
     }
 
