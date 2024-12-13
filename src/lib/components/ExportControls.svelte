@@ -19,7 +19,7 @@
         if (canvas) {
             const { default: RecordRTC } = await import("recordrtc");
 
-            const stream = canvas.captureStream(20);
+            const stream = canvas.captureStream(30);
 
             recorder = new RecordRTC(stream, {
                 type: "video",

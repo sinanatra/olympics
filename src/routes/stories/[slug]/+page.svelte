@@ -42,7 +42,7 @@
 
     onMount(async () => {
         width.set(window.innerWidth);
-        height.set(800);
+        height.set(650);
 
         const loadedTSVData = await tsv(
             base + "/data/update-until-2022/data.tsv",
@@ -151,7 +151,7 @@
 
 <style>
     .sketch {
-        min-height: 800px;
+        /* min-height: 800px; */
         position: sticky;
         top: 0;
         z-index: -1;

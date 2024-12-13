@@ -29,8 +29,8 @@
 
         data.set(processedData);
 
-        width.set(3840);
-        height.set(2160);
+        width.set(3240);
+        height.set(1080);
     });
 </script>
 

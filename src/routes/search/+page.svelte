@@ -29,7 +29,7 @@
         data.set(processedData);
 
         width.set(window.innerWidth);
-        height.set(800);
+        height.set(650);
 
         // test
         // width.set(3240);
