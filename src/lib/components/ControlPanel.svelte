@@ -414,7 +414,14 @@
                         class:highlighted={$highlightedEntities.includes(
                             entity,
                         )}
-                        on:click={() => highlightedEntities.set([entity])}
+                        on:click={() => {
+                            highlightedEntities.update((list) => {
+                                if (!list.includes(entity)) {
+                                    list.push(entity);
+                                }
+                                return list;
+                            });
+                        }}
                     >
                         {entity}
                     </span>
