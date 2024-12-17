@@ -1,7 +1,7 @@
 ---
 {
   "title": "Soviet Union's player",
-  "caption": "Highlighted the former Soviet Union's player across the team she joined",
+  "caption": "Highlighted the former Soviet Union's player across the team they joined",
   "media": true,
   "config": {
     "clusterBy": "team",

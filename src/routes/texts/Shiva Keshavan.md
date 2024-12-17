@@ -1,7 +1,7 @@
 ---
 {
   "title": "Shiva Keshavan",
-  "caption": "Highlighted Keshavan's movement across the teams where she competed",
+  "caption": "Highlighted Shiva Keshavan's movement across the teams where she competed",
   "media": false,
   "config": {
     "clusterBy": "team",

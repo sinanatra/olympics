@@ -1,7 +1,7 @@
 ---
 {
   "title": "Arturo Kinch",
-  "caption": "Highlighted Kinch's movements across the Olympic teams where he played",
+  "caption": "Highlighted Arturo Kinch's movements across the Olympic cities where he competed",
   "media": false,
   "config": {
     "clusterBy": "city",

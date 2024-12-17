@@ -169,7 +169,7 @@
         const currentConfig = {
             title: "Default Title",
             caption: "Add a caption here",
-            media: true,
+            media: false,
             config: {
                 clusterBy: $config.clusterBy,
                 moveBy: $config.moveBy,

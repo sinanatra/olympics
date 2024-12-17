@@ -1,7 +1,7 @@
 ---
 {
   "title": "Alberto Tomba",
-  "caption": "Highlighted Tomba's movements across the Olympic cities where he competed",
+  "caption": "Highlighted Alberto Tomba's movements across the Olympic cities where he competed",
   "media": false,
   "config": {
     "clusterBy": "city",

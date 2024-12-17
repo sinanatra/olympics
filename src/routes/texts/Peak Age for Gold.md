@@ -2,7 +2,7 @@
 {
   "title": "Peak Age for Gold",
   "caption": "Highlighted all the gold medalist across the ages they had when they competed",
-  "media": true,
+  "media": false,
   "config": {
     "clusterBy": "age",
     "moveBy": "name",
@@ -14,7 +14,7 @@
     "queryValue": "",
     "queryCategory": "name",
     "speed": 5,
-    "stroke": 10,
+    "stroke": 2,
     "loops": 1,
     "highlightedEntities": [
       "kjetil andré aamodt",

@@ -1,7 +1,7 @@
 ---
 {
   "title": "Sonja Henie",
-  "caption": "Highlighted Henie's movement across the ages she had when competing in the Olympic games",
+  "caption": "Highlighted Sonja Henie's movement across the ages she had when competing in the Olympic games",
   "media": false,
   "config": {
     "clusterBy": "age",
