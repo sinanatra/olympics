@@ -150,7 +150,11 @@
     ]
   }
 }
+
 ---
+
 In the wake of the Soviet Union’s dissolution, athletes from its former republics found themselves at a crossroads, their dreams of Olympic glory threatened by the chaos of political upheaval. With their nations too young to form Olympic committees or provide resources, the athletes banded together under the Unified Team, prioritizing their shared legacy and the chance to compete on the world stage. After the 1992 Olympics, many went on to represent their newly independent nations—Ukrainians like Sergey Bubka carried the flag for Ukraine, while Russians, Kazakhs, Belarusians, and others forged new identities under their national banners. The Unified Team became a fleeting symbol of unity amidst change, as these athletes transitioned to proudly standing under their own flags in subsequent Games.
+
+---
 
 Dopo la dissoluzione dell’Unione Sovietica, gli atleti delle sue ex repubbliche si trovarono a un bivio, con i loro sogni di gloria olimpica minacciati dal caos politico. Con i loro paesi troppo giovani per formare comitati olimpici o fornire risorse, gli atleti si unirono sotto la squadra unificata, dando priorità alla loro eredità condivisa e alla possibilità di competere sul palcoscenico mondiale. Dopo le Olimpiadi del 1992, molti di loro iniziarono a rappresentare le loro nuove nazioni indipendenti: atleti ucraini come Sergey Bubka portarono alta la bandiera dell’Ucraina, mentre russi, kazaki, bielorussi e altri costruirono nuove identità sotto i loro stendardi nazionali. La squadra unificata rimase un simbolo fugace di unità nel cambiamento, mentre questi atleti passavano a rappresentare con orgoglio le proprie bandiere nelle Olimpiadi successive.

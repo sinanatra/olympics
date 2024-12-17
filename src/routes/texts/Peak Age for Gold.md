@@ -1806,8 +1806,11 @@
     ]
   }
 }
--
--
+
+---
+
 The average age of gold medalists at the Winter Olympics is approximately 26.3 years, highlighting the stage where physical peak, technical skill, and experience align. This age reflects the demands of winter sports, which often require a blend of youthful agility and the strategic maturity that comes with years of training. While some sports, like figure skating or snowboarding, see younger champions, others, such as biathlon or bobsleigh, favor athletes in their late 20s or early 30s, demonstrating the diverse nature of peak performance across winter disciplines.
+
+---
 
 L’età media dei vincitori della medaglia d’oro alle Olimpiadi invernali è di circa 26,3 anni, evidenziando il momento in cui si allineano il picco fisico, le capacità tecniche e l’esperienza. Questa età riflette le esigenze degli sport invernali, che spesso richiedono una combinazione di agilità giovanile e maturità strategica acquisita con anni di allenamento. Mentre alcuni sport, come il pattinaggio artistico o lo snowboard, vedono campioni più giovani, altri, come il biathlon o il bob, favoriscono atleti verso la fine dei vent’anni o i primi trenta, dimostrando la natura diversificata delle massime prestazioni nei diversi sport invernali.
