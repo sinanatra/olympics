@@ -10,10 +10,10 @@
         </div>
         <div class="content">
             <div class="description">
-                <p>{currentStory.description}</p>
-            </div>
-            <div class="methodology">
-                <p>{currentStory.methodology}</p>
+                <!-- <p>{currentStory.description}</p>
+            </div> -->
+            <div class="caption">
+                <p>{currentStory.caption}</p>
             </div>
         </div>
     {:else}

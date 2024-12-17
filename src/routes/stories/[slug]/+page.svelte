@@ -6,6 +6,7 @@
         width,
         height,
         config,
+        caption,
         highlightedEntities,
     } from "$lib/stores.js";
     import Sketch from "$lib/components/Sketch.svelte";
@@ -69,6 +70,8 @@
         }));
 
         highlightedEntities.set(datum.meta.config.highlightedEntities || []);
+
+        caption.set(datum.meta.caption || "");
     }
 </script>
 
@@ -97,9 +100,9 @@
             <Sketch />
         </div>
 
-        {#if datum.meta.methodology}
-            <div class="methodology">
-                {@html datum.meta.methodology}
+        {#if datum.meta.caption}
+            <div class="caption">
+                {@html datum.meta.caption}
             </div>
         {/if}
         <div class="info">
@@ -218,7 +221,7 @@
         object-fit: contain;
     }
 
-    .methodology {
+    .caption {
         color: var(--main-color);
         text-align: right;
         opacity: 0.6;

@@ -1,8 +1,7 @@
 ---
 {
   "title": "Alina Zagitova",
-  "description": "Alina Zagitova, a trailblazing figure skater, etched her name in history at the 2018 PyeongChang Winter Olympics by winning gold in women’s singles at just 15 years old.",
-  "methodology": "",
+  "caption": "Highlighted Zagitova's movements across the Olympic cities where she competed",
   "media": false,
   "config": {
     "clusterBy": "team",

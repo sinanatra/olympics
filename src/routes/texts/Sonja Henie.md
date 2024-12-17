@@ -1,8 +1,7 @@
 ---
 {
   "title": "Sonja Henie",
-  "description": "Sonja Henie, the Norwegian figure skating prodigy, dazzled the world when she competed in her first Winter Olympics at just 11 years old in Chamonix in 1924.",
-  "methodology": "",
+  "caption": "Highlighted Henie's movement across the ages she had when competing in the Olympic games",
   "media": false,
   "config": {
     "clusterBy": "age",

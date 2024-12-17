@@ -1,8 +1,7 @@
 ---
 {
-  "title": "",
-  "description": "",
-  "methodology": "",
+  "title": "Mosaner and Costantini",
+  "caption": "Highlighted Mosaner and Costantini's movements across the Olympic sports where they competed",
   "media": true,
   "config": {
     "clusterBy": "team",
@@ -17,8 +16,8 @@
     },
     "queryValue": "",
     "queryCategory": "name",
-    "speed": 3,
-    "stroke": 1,
+    "speed": 5,
+    "stroke": 10,
     "loops": 1,
     "highlightedEntities": [
       "amos mosaner",

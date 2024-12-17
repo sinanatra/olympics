@@ -9,7 +9,7 @@
         <a href={d.path.replace("/texts/", "")} data-sveltekit-reload>
             <div class="grid-container">
                 <h1>{@html d.meta.title}</h1>
-                <p>{@html d.meta.description}</p>
+                <p>{@html d.meta.caption}</p>
             </div>
         </a>
     {/each}

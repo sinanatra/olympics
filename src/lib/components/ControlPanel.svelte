@@ -5,6 +5,7 @@
         entities,
         clusters,
         filters,
+        caption,
     } from "$lib/stores.js";
     import { clusterOptions, filteredOptions } from "$lib/constants.js";
     import { get } from "svelte/store";
@@ -166,9 +167,8 @@
 
     function copyConfig() {
         const currentConfig = {
-            title: "",
-            description: "",
-            methodology: "",
+            title: "Default Title",
+            caption: "Add a caption here",
             media: true,
             config: {
                 clusterBy: $config.clusterBy,
@@ -176,8 +176,8 @@
                 filters: $config.filters,
                 queryValue: queryValue,
                 queryCategory: $config.queryCategory || "name",
-                speed: $config.speed || 3,
-                stroke: $config.stroke || 1,
+                speed: $config.speed || 6,
+                stroke: $config.stroke || 10,
                 loops: $config.loopsToComplete || 1,
                 highlightedEntities: get(highlightedEntities),
             },
@@ -309,6 +309,7 @@
 
             if (nameFilter && activeFilters.length === 1) {
                 text = `${nameFilter.label} is shown moving across ${selectedCluster}`;
+                $caption = text;
             } else {
                 const details = activeFilters
                     .map((item) => {
@@ -321,9 +322,11 @@
                     .join(", ");
 
                 text = `${totalParticipants} ${pluralize(totalParticipants, "participant")} [${details}]  ${pluralize(totalParticipants, "is")} seen moving across ${selectedCluster}`;
+                $caption = text
             }
         } else {
             text = `${totalParticipants}  ${pluralize(totalParticipants, "participant")}  ${pluralize(totalParticipants, "is")} grouped by ${selectedCluster}`;
+            $caption = text
         }
 
         return text;
@@ -332,7 +335,7 @@
 
 <header>
     <div class="header-info">
-        <div class="methodology">
+        <div class="caption">
             {methodologyText}
         </div>
         <div class="header-buttons">
@@ -407,7 +410,7 @@
             />
             <div class="options tiny">
                 {#each entitiesList
-                    .slice(0, 50)
+                    .slice(0, 100)
                     .sort( ([aName], [bName]) => aName.localeCompare(bName), ) as [entity, value]}
                     <span
                         style="font-size: {getFontSize(value)}px;"
@@ -426,9 +429,9 @@
                         {entity}
                     </span>
                 {/each}
-                {#if entitiesList.length > 50}
+                {#if entitiesList.length > 100}
                     <p style="border-top: 1px solid;padding-top:10px">
-                        50 out of {entitiesList.length}
+                        100 out of {entitiesList.length}
                     </p>
                 {/if}
             </div>

@@ -20,6 +20,7 @@
         fontLoaded,
         stationaryCounts,
         canvasStore,
+        caption
     } from "$lib/stores.js";
     import { colorMap } from "$lib/constants.js";
 
@@ -150,6 +151,16 @@
                     clusterPositionsData,
                     configData,
                     randomizeClustersData,
+                );
+
+                
+                // console.log( get(config))
+                s.textAlign(s.CENTER, s.CENTER);
+                s.textSize(18);
+                s.text(
+                    get(config).caption ||  get(caption) || colorMap[configData.clusterBy].text,
+                    get(width) / 2,
+                    get(height) / 2,
                 );
             }
         };
@@ -284,7 +295,7 @@
 
         if (startPos && endPos) {
             const strokeColor = entityData.isGoingBack
-                ? [0, 0, 40]
+                ? [0, 0, 20]
                 : getStrokeColor(
                       s,
                       entityData,
@@ -293,9 +304,11 @@
                       entityData.isGoingBack,
                   );
 
-            strokeWeightValue = entityData.isGoingBack ? strokeWeightValue / 3 : strokeWeightValue;
+            strokeWeightValue = entityData.isGoingBack
+                ? strokeWeightValue / 3
+                : strokeWeightValue;
 
-            s.stroke(isEntityHighlighted ? [...strokeColor] : [0, 0, 40]);
+            s.stroke(isEntityHighlighted ? [...strokeColor] : [0, 0, 20]);
             s.strokeWeight(isEntityHighlighted ? strokeWeightValue : 0.5);
             s.noFill();
             s.strokeJoin(s.ROUND);
@@ -553,7 +566,7 @@
         configData,
         randomizeClustersData,
     ) {
-        s.fill(...(colorMap[configData.clusterBy]?.end || [0, 0, 40]));
+        s.fill(...(colorMap[configData.clusterBy]?.end || [0, 0, 20]));
 
         s.noStroke();
         s.textFont(font);

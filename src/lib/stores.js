@@ -26,3 +26,4 @@ export const height = writable(0);
 export const canvasStore = writable(null);
 export const triggerRedraw = writable(false)
 export const filters = writable([])
+export const caption = writable("")

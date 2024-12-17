@@ -1,8 +1,7 @@
 ---
 {
-  "title": "",
-  "description": "",
-  "methodology": "",
+  "title": "Soviet Union's player",
+  "caption": "Highlighted the former Soviet Union's player across the team she joined",
   "media": true,
   "config": {
     "clusterBy": "team",
@@ -14,8 +13,8 @@
     },
     "queryValue": "",
     "queryCategory": "name",
-    "speed": 3,
-    "stroke": 1,
+    "speed": 5,
+    "stroke": 10,
     "loops": 1,
     "highlightedEntities": [
       "yuliya yakunovna allagulova",
