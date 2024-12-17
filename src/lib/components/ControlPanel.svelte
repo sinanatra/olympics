@@ -336,7 +336,7 @@
 <header>
     <div class="header-info">
         <div class="caption">
-            {methodologyText}
+            <!-- {methodologyText} -->
         </div>
         <div class="header-buttons">
             <div class="active-filters" on:click={resetQueries}>
