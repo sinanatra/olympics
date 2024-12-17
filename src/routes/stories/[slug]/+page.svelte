@@ -43,7 +43,7 @@
 
     onMount(async () => {
         width.set(window.innerWidth);
-        height.set(650);
+        height.set(500);
 
         const loadedTSVData = await tsv(
             base + "/data/update-until-2022/data.tsv",
@@ -161,12 +161,16 @@
     }
 
     .navigation {
-        position: absolute;
+        /* position: absolute;
         top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: auto;
-        font-size: 1.5rem;
+        left: 50%; */
+        /* transform: translateX(-50%); */
+        width: 200px;
+        text-align: center;
+        display: block;
+        margin: 0 auto;
+        font-size: 3rem;
+        margin-bottom: 5px;
         line-height: 0.5;
     }
 
