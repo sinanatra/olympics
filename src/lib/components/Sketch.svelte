@@ -20,7 +20,7 @@
         fontLoaded,
         stationaryCounts,
         canvasStore,
-        caption
+        caption,
     } from "$lib/stores.js";
     import { colorMap } from "$lib/constants.js";
 
@@ -44,6 +44,12 @@
             });
         };
 
+        s.windowResized = () => {
+            $width = s.windowWidth;
+            s.resizeCanvas(s.windowWidth, get(height));
+            processClusters();
+        };
+
         s.setup = () => {
             const canvas = s.createCanvas(get(width), get(height));
             canvasStore.set(canvas.canvas);
@@ -58,7 +64,6 @@
 
         s.draw = () => {
             s.background(0, 0.1);
-
             const entitiesData = get(entities);
             const clustersData = get(clusters);
             const clusterPositionsData = get(clusterPositions);
@@ -153,12 +158,13 @@
                     randomizeClustersData,
                 );
 
-                
                 // console.log( get(config))
                 s.textAlign(s.CENTER, s.CENTER);
-                s.textSize(18);
+                s.textSize(12);
                 s.text(
-                    get(config).caption ||  get(caption) || colorMap[configData.clusterBy].text,
+                    get(config).caption ||
+                        get(caption) ||
+                        colorMap[configData.clusterBy].text,
                     get(width) / 2,
                     get(height) / 2,
                 );
@@ -539,7 +545,7 @@
 
                     s.noFill();
                     s.stroke(...strokeColor);
-                    s.strokeWeight(adjustedStrokeWeight);
+                    s.strokeWeight(configData.stroke || adjustedStrokeWeight);
 
                     s.strokeJoin(s.ROUND);
 
