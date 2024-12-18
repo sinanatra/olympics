@@ -7,7 +7,11 @@
         filters,
         caption,
     } from "$lib/stores.js";
-    import { clusterOptions, filteredOptions } from "$lib/constants.js";
+    import {
+        clusterOptions,
+        filteredOptions,
+        colorMap,
+    } from "$lib/constants.js";
     import { get } from "svelte/store";
 
     let queryValue = $config.queryValue || "";
@@ -321,12 +325,12 @@
                     })
                     .join(", ");
 
-                text = `${totalParticipants} ${pluralize(totalParticipants, "participant")} [${details}]  ${pluralize(totalParticipants, "is")} seen moving across ${selectedCluster}`;
-                $caption = text
+                text = `${totalParticipants} ${pluralize(totalParticipants, "participant")} [${details}] ${pluralize(totalParticipants, "is")} seen moving across ${selectedCluster}`;
+                $caption = text;
             }
         } else {
-            text = `${totalParticipants}  ${pluralize(totalParticipants, "participant")}  ${pluralize(totalParticipants, "is")} grouped by ${selectedCluster}`;
-            $caption = text
+            text = `${totalParticipants} ${pluralize(totalParticipants, "participant")} ${pluralize(totalParticipants, "is")}`;
+            $caption = `${text} ${colorMap[get(config).clusterBy].text}` ;
         }
 
         return text;
@@ -372,7 +376,7 @@
         <div class="filtered-cluster-values">
             <label>Filter {$config.clusterBy}:</label>
             <div class="options tiny">
-                {#each clusterValuesList as [value, count]}
+                {#each clusterValuesList.sort() as [value, count]}
                     <span
                         style="font-size: {getClusterFontSize(count)}px;"
                         class:selected={$config.filters[
