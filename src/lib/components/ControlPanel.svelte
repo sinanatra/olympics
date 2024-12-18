@@ -320,17 +320,17 @@
                         if (item.type === "name") {
                             return item.label;
                         } else {
-                            return `${item.type}:${item.label}`;
+                            return `${item.type} → ${item.label}`;
                         }
                     })
                     .join(", ");
 
-                text = `${totalParticipants} ${pluralize(totalParticipants, "participant")} [${details}] ${pluralize(totalParticipants, "is")} seen moving across ${selectedCluster}`;
+                text = `${totalParticipants} ${pluralize(totalParticipants, "participant")} {${details}} ${pluralize(totalParticipants, "is")} seen moving across ${selectedCluster}`;
                 $caption = text;
             }
         } else {
             text = `${totalParticipants} ${pluralize(totalParticipants, "participant")} ${pluralize(totalParticipants, "is")}`;
-            $caption = `${text} ${colorMap[get(config).clusterBy].text}` ;
+            $caption = `${text} ${colorMap[get(config).clusterBy].text}`;
         }
 
         return text;
@@ -382,7 +382,10 @@
                         class:selected={$config.filters[
                             $config.clusterBy
                         ]?.[0] === value}
-                        on:click={() => selectClusterValue(value)}
+                        on:click={() => {
+                            $highlightedEntities = [];
+                            selectClusterValue(value);
+                        }}
                     >
                         {value}
                     </span>
