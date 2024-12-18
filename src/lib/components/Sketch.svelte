@@ -163,8 +163,8 @@
                 s.textSize(12);
                 s.text(
                     get(config).caption ||
-                        get(caption) ||
-                        colorMap[configData.clusterBy].text,
+                        // colorMap[configData.clusterBy].text ||
+                        get(caption),
                     get(width) / 2,
                     get(height) / 2,
                 );
@@ -180,6 +180,15 @@
         get(data).forEach((d) => {
             const entityName = d[configData.moveBy];
             const clusterKey = d[configData.clusterBy];
+
+            if (
+                !entityName ||
+                entityName === "NA" ||
+                !clusterKey ||
+                clusterKey === "NA"
+            ) {
+                return;
+            }
 
             if (!tempEntities[entityName]) {
                 tempEntities[entityName] = {
