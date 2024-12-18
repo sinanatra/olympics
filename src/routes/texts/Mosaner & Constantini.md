@@ -2,7 +2,7 @@
 {
   "title": "Mosaner and Costantini",
   "caption": "Highlighted Mosaner and Costantini's movements across the Olympic sports where they competed",
-  "media": true,
+  "media": false,
   "config": {
     "clusterBy": "team",
     "moveBy": "name",

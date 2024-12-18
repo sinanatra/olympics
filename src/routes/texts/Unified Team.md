@@ -2,7 +2,7 @@
 {
   "title": "Soviet Union's player",
   "caption": "Highlighted the former Soviet Union's player across the team they joined",
-  "media": true,
+  "media": false,
   "config": {
     "clusterBy": "team",
     "moveBy": "name",
