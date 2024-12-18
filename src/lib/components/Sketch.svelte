@@ -160,7 +160,10 @@
 
                 // console.log( get(config))
                 s.textAlign(s.CENTER, s.CENTER);
-                s.textSize(12);
+                // s.fill(...(colorMap[configData.clusterBy]?.end || [0, 0, 20]));
+                // s.fill([0, 0, 20]);
+
+                s.textSize(18);
                 s.text(
                     get(config).caption ||
                         // colorMap[configData.clusterBy].text ||
