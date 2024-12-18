@@ -84,7 +84,7 @@
                 <a
                     class="prev"
                     href="{base}/stories/{prevPost.path.replace('/texts/', '')}"
-                    >←</a
+                    >↲</a
                 >
             {/if}
             {#if nextPost}
@@ -92,7 +92,7 @@
                     class="next"
                     href="{base}/stories/{nextPost.path.replace('/texts/', '')}"
                 >
-                    →</a
+                    ↳</a
                 >
             {/if}
         </div>
@@ -252,7 +252,7 @@
     }
 
     a {
-        color: var(--main-color);
+        color: var(--second-color);
         text-decoration: unset;
     }
 
