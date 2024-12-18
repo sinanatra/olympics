@@ -43,7 +43,7 @@
 
     onMount(async () => {
         width.set(window.innerWidth);
-        height.set(500);
+        height.set(550);
 
         const loadedTSVData = await tsv(
             base + "/data/update-until-2022/data.tsv",
@@ -101,9 +101,9 @@
         </div>
 
         {#if datum.meta.caption}
-            <div class="caption">
+            <!-- <div class="caption">
                 {@html datum.meta.caption}
-            </div>
+            </div> -->
         {/if}
         <div class="info">
             <div class="title">
@@ -188,6 +188,10 @@
         flex-direction: column;
         gap: 20px;
         font-size: 18px;
+    }
+
+    h1 {
+        margin: 0;
     }
 
     /* .content {
