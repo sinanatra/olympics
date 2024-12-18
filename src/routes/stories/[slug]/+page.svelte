@@ -170,7 +170,7 @@
         display: block;
         margin: 0 auto;
         font-size: 3rem;
-        margin-bottom: 5px;
+        margin-bottom: 20px;
         line-height: 0.5;
     }
 
