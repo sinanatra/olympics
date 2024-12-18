@@ -28,8 +28,10 @@
             d.path.includes($page.params.slug),
         );
 
-        nextPost = loadedData.posts[currentIndex + 1] || null;
-        prevPost = loadedData.posts[currentIndex - 1] || null;
+        nextPost = loadedData.posts[currentIndex + 1] || loadedData.posts[0];
+        prevPost =
+            loadedData.posts[currentIndex - 1] ||
+            loadedData.posts[loadedData.posts.length - 1];
 
         config.update((c) => ({
             ...c,
