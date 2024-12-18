@@ -545,7 +545,11 @@
 
                     s.noFill();
                     s.stroke(...strokeColor);
-                    s.strokeWeight(configData.stroke || adjustedStrokeWeight);
+                    s.strokeWeight(
+                        highlightedEntitiesData.length > 10
+                            ? adjustedStrokeWeight
+                            : configData.stroke || adjustedStrokeWeight,
+                    );
 
                     s.strokeJoin(s.ROUND);
 
