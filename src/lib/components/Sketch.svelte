@@ -158,18 +158,16 @@
                     randomizeClustersData,
                 );
 
-                // console.log( get(config))
-                s.textAlign(s.CENTER, s.CENTER);
-                // s.fill(...(colorMap[configData.clusterBy]?.end || [0, 0, 20]));
-                // s.fill([0, 0, 20]);
-
                 s.textSize(18);
+
+                s.textAlign(s.CENTER, s.CENTER);
+                const margin = 450;
+
                 s.text(
-                    get(config).caption ||
-                        // colorMap[configData.clusterBy].text ||
-                        get(caption),
-                    get(width) / 2,
-                    get(height) / 2,
+                    get(config).caption || get(caption),
+                    get(width) / 2 - (margin / 2),
+                    get(height) / 2 ,
+                    margin,
                 );
             }
         };
