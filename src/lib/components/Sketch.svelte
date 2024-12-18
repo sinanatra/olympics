@@ -158,15 +158,20 @@
                     randomizeClustersData,
                 );
 
-                s.textSize(18);
-
                 s.textAlign(s.CENTER, s.CENTER);
-                const margin = 450;
+                let margin = 450;
+
+                if (get(width) < 600) {
+                    s.textSize(12);
+                    margin = 300;
+                } else {
+                    s.textSize(18);
+                }
 
                 s.text(
                     get(config).caption || get(caption),
-                    get(width) / 2 - (margin / 2),
-                    get(height) / 2 ,
+                    get(width) / 2 - margin / 2,
+                    get(height) / 2,
                     margin,
                 );
             }

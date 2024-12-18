@@ -9,7 +9,7 @@ export const overlappingEntitiesCount = writable({});
 export const stationaryCounts = writable({});
 export const randomizeClusters = writable(false);
 export const config = writable({
-    clusterBy: 'age',
+    clusterBy: 'sport',
     moveBy: 'name',
     queryValue: '',
     queryCategory: 'name',

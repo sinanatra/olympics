@@ -1,6 +1,6 @@
 export const colorMap = {
     name: { start: [210, 100, 50], end: [210, 100, 40], text: "" },   // Blue gradient
-    sport: { start: [45, 100, 60], end: [45, 100, 40], text: "moving between sport" },    // Yellow gradient
+    sport: { start: [45, 100, 60], end: [45, 100, 40], text: "moving between sports" },    // Yellow gradient
     city: { start: [139, 100, 40], end: [139, 100, 20], text: "moving between cities" },     // Green gradient
     height: { start: [0, 80, 60], end: [0, 80, 40], text: "grouped by height" },       // Red gradient
     noc: { start: [0, 0, 80], end: [0, 0, 40], text: "grouped by  nationalities" },            // White to black gradient
