@@ -1,6 +1,6 @@
 <script>
     import { base } from "$app/paths";
-
+    import { fade } from "svelte/transition";
     import { onMount } from "svelte";
     import { data, width, height, config, stroke } from "$lib/stores.js";
     import Sketch from "$lib/components/Sketch.svelte";
@@ -38,7 +38,7 @@
 </script>
 
 {#if $data.length > 0}
-    <main>
+    <main transition:fade>
         <div>
             <Sketch />
         </div>

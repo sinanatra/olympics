@@ -1,6 +1,7 @@
 <script>
     import { base } from "$app/paths";
     import { onMount } from "svelte";
+    import { fade } from "svelte/transition";
     import {
         data as storeData,
         width,
@@ -79,10 +80,12 @@
 
 {#if datum != undefined && $storeData.length > 0 && athletes.length > 0}
     <header>
-        <div class="navigation" data-sveltekit-reload>
+        <!-- <div class="navigation" data-sveltekit-reload> -->
+        <div class="navigation">
             {#if prevPost}
                 <a
                     class="prev"
+                    target="_self"
                     href="{base}/stories/{prevPost.path.replace('/texts/', '')}"
                     >↲</a
                 >
@@ -90,6 +93,7 @@
             {#if nextPost}
                 <a
                     class="next"
+                    target="_self"
                     href="{base}/stories/{nextPost.path.replace('/texts/', '')}"
                 >
                     ↳</a
@@ -97,7 +101,7 @@
             {/if}
         </div>
     </header>
-    <main>
+    <main transition:fade>
         <div class="sketch">
             <Sketch />
         </div>
