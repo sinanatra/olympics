@@ -24,6 +24,7 @@
     }
 
     a {
+        display: block;
         color: black;
         text-decoration: none;
         width: 100%;
@@ -41,6 +42,7 @@
         background-color: white;
         border-radius: 10px;
         padding: 10px;
+        margin-bottom: 10px;
         min-height: 100px;
     }
 
