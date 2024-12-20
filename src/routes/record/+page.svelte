@@ -2,11 +2,19 @@
     import { base } from "$app/paths";
 
     import { onMount } from "svelte";
-    import { data, width, height, config, stroke } from "$lib/stores.js";
+    import {
+        data as mainData,
+        width,
+        height,
+        config,
+        highlightedEntities,
+    } from "$lib/stores.js";
     import Sketch from "$lib/components/Sketch.svelte";
     import ControlPanel from "$lib/components/ControlPanel.svelte";
     import ExportControls from "$lib/components/ExportControls.svelte";
+    export let data;
 
+    let storyid = -1;
     import { tsv } from "d3-fetch";
 
     // $config.clusterBy = "age";
@@ -27,19 +35,42 @@
             return processedRow;
         });
 
-        data.set(processedData);
+        mainData.set(processedData);
 
         width.set(3240);
         height.set(1080);
     });
 </script>
 
-{#if $data.length > 0}
+{#if $mainData.length > 0}
     <main>
         <div>
             <Sketch />
         </div>
-        <div><ExportControls /></div>
+        <div>
+            <button
+                on:click={() => {
+                    storyid = (storyid + 1) % data.posts.length;
+                    // caption.set(data.posts[storyid]?.meta?.caption || "");
+
+                    config.update((c) => ({
+                        ...c,
+                        ...data.posts[storyid]?.meta?.config,
+                        caption: data.posts[storyid]?.meta?.caption,
+                    }));
+
+                    highlightedEntities.set(
+                        data.posts[storyid]?.meta?.config
+                            ?.highlightedEntities || [],
+                    );
+                }}
+            >
+                Select Story: {data.posts[storyid]?.meta?.title || "No Title"}
+            </button>
+        </div>
+        <div>
+            <ExportControls />
+        </div>
         <div>
             <ControlPanel />
         </div>
