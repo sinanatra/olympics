@@ -159,13 +159,15 @@
                 );
 
                 s.textAlign(s.CENTER, s.CENTER);
-                let margin = 450;
+                let margin = 600;
 
                 if (get(width) < 600) {
                     s.textSize(12);
                     margin = 300;
+                } else if (get(width) > 3000) {
+                    s.textSize(34);
                 } else {
-                    s.textSize(18);
+                    s.textSize(14);
                 }
 
                 s.text(
@@ -235,9 +237,36 @@
     }
 
     function updateEntityPositions() {
-        const margin = 50;
+        let margin = 30;
+
+        // if (get(config).clusterBy == "sport") {
+        //     margin = 50;
+        // } else if (get(config).clusterBy == "city") {
+        //     margin = 50;
+        // } else if (get(config).clusterBy == "height") {
+        //     margin = 20;
+        // } else if (get(config).clusterBy == "year") {
+        //     margin = 20;
+        // } else if (get(config).clusterBy == "team") {
+        //     margin = 40;
+        // } else if (get(config).clusterBy == "weight") {
+        //     margin = 20;
+        // } else if (get(config).clusterBy == "age") {
+        //     margin = 20;
+        // } else if (get(config).clusterBy == "event") {
+        //     margin = 150;
+        // } else
+
+        // if (get(width) < 600) {
+        //     margin = 10;
+        // } else if (get(width) > 3000) {
+        //     margin = 0;
+        // } else {
+        //     margin = 30;
+        // }
+
         const xRadius = (get(width) - margin * 2) / 2;
-        const yRadius = (get(height) - margin * 2) / 2;
+        const yRadius = (get(height) - margin * 1.5) / 2;
         const tempClusterPositions = {};
 
         const totalClusters = get(clusters).length;
@@ -610,14 +639,30 @@
                     if (angle > Math.PI / 2 || angle < -Math.PI / 2) {
                         angle += Math.PI;
                         s.textAlign(s.RIGHT, s.BOTTOM);
+                        s.textAlign(s.LEFT, s.LEFT);
                     } else {
                         s.textAlign(s.LEFT, s.TOP);
+                        s.textAlign(s.RIGHT, s.RIGHT);
                     }
                     s.translate(pos.x, pos.y);
                     s.rotate(angle);
                 }
-                s.textSize(14);
-                s.text(clusterKey, 0, 0);
+
+                if (get(width) < 600) {
+                    s.textSize(12);
+                    margin = 300;
+                } else if (get(width) > 3000) {
+                    s.textSize(20);
+                } else {
+                    s.textSize(12);
+                }
+
+                const wrappedText =
+                    clusterKey.length < 22
+                        ? clusterKey
+                        : `${clusterKey.substring(0, 22)}...`;
+
+                s.text(wrappedText, 0, 0);
                 s.pop();
             }
         });

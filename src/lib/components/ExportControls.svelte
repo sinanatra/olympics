@@ -1,6 +1,12 @@
 <script>
     import { get } from "svelte/store";
-    import { config, canvasStore, filters } from "$lib/stores.js";
+    import {
+        config,
+        canvasStore,
+        filters,
+        syncRecording,
+        highlightedEntities,
+    } from "$lib/stores.js";
     import { colorMap } from "$lib/constants.js";
     import { markEntityLoopComplete } from "$lib/loopStatus";
 
@@ -11,8 +17,16 @@
     let currentStep = 0;
     let interval;
 
-    const recordDuration = 60000;
+    const recordDuration = 2000;
     const advancedRecordDuration = 4000;
+
+    $: {
+        if ($syncRecording == true) {
+            startRecording();
+        } else {
+            stopRecording();
+        }
+    }
 
     async function startRecording() {
         const canvas = get(canvasStore);
@@ -118,14 +132,20 @@
             for (const specificValue of filterValues) {
                 config.update((c) => ({
                     ...c,
+                    queryValue: "",
+                    filters: {},
+                }));
+
+                highlightedEntities.set([]);
+
+                config.update((c) => ({
+                    ...c,
                     clusterBy: clusterByKey,
                     filters: {
                         [clusterByKey]: [specificValue[0]],
                     },
                     speed: 5,
                 }));
-
-                // console.log(specificValue[0]);
 
                 await new Promise((resolve) => {
                     // console.log($markEntityLoopComplete);
@@ -152,6 +172,7 @@
                 clusterBy: clusterByKey,
                 filters: {},
             }));
+
             await new Promise((resolve) => setTimeout(resolve, 2000));
 
             await processFiltersForKey(clusterByKey);

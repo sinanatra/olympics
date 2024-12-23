@@ -56,7 +56,7 @@
         }
 
         const query = $config.queryValue?.toLowerCase() || "";
-        if (query.length >= 3) {
+        if (query.length >= 0) {
             const queryCategory = $config.queryCategory || "name";
             const matchesQuery = dataPoints.some((dp) =>
                 dp[queryCategory]?.toString().toLowerCase().includes(query),
@@ -79,6 +79,7 @@
             acc[key] = entityData;
             return acc;
         }, {});
+
 
     function selectOption(type, option) {
         if (type === "clusterBy") {
