@@ -165,7 +165,8 @@
                     s.textSize(12);
                     margin = 300;
                 } else if (get(width) > 3000) {
-                    s.textSize(34);
+                    s.textSize(40);
+                    margin = 1000;
                 } else {
                     s.textSize(14);
                 }

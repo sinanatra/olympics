@@ -17,7 +17,7 @@
     let currentStep = 0;
     let interval;
 
-    const recordDuration = 2000;
+    const recordDuration = 20000;
     const advancedRecordDuration = 4000;
 
     $: {
