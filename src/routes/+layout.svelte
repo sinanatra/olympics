@@ -9,6 +9,7 @@
 </script>
 
 <header data-sveltekit-reload>
+    <a href="{base}/">Start</a> –
     <a href="{base}/stories">Stories</a>
     <a href="{base}/search">Search</a>
 </header>
