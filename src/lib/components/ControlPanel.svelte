@@ -80,7 +80,6 @@
             return acc;
         }, {});
 
-
     function selectOption(type, option) {
         if (type === "clusterBy") {
             config.update((c) => ({ ...c, clusterBy: option }));
@@ -426,6 +425,7 @@
                             entity,
                         )}
                         on:click={() => {
+                            $highlightedEntities = [];
                             highlightedEntities.update((list) => {
                                 if (!list.includes(entity)) {
                                     list.push(entity);
