@@ -29,7 +29,8 @@
     .intro {
         max-width: 1200px;
         margin: 0 auto;
-        font-size: 64px;
+        padding: 10px;
+        font-size: clamp(24px, 10vw, 64px);
     }
     a {
         width: 100%;
