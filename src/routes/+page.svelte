@@ -24,6 +24,7 @@
 <style>
     main {
         margin: 0 auto;
+        color: white;
     }
 
     .intro {

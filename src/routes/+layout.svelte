@@ -21,9 +21,9 @@
     :global(body) {
         margin: 0;
         padding: 0;
-        font-family: circular;
+        font-family: circular, sans-serif;
         background-color: black;
-        color: white;
+        color: rgb(164, 164, 164);
     }
 
     @font-face {
@@ -41,6 +41,6 @@
     }
 
     a {
-        color: white;
+        color: rgb(164, 164, 164);
     }
 </style>
