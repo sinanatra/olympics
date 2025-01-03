@@ -1,4 +1,4 @@
-import{s as l,e as c,c as m,m as p,o as i,i as h,n as a,f as d}from"../chunks/scheduler.C4GZKIzL.js";import{S as u,i as v}from"../chunks/index.DmHFZWEd.js";import{b as n}from"../chunks/paths.BRDMMqIx.js";function f(r){let e,s=`<div class="intro svelte-18m9an"><p>A data storytelling installation visualizing all 22,560 athletes who
+import{s as l,e as c,c as m,m as p,o as i,i as h,n as a,f as d}from"../chunks/scheduler.C4GZKIzL.js";import{S as u,i as v}from"../chunks/index.DmHFZWEd.js";import{b as n}from"../chunks/paths.Bv8dXYvr.js";function f(r){let e,s=`<div class="intro svelte-18m9an"><p>A data storytelling installation visualizing all 22,560 athletes who
             have ever participated in the Olympic Winter Games from its
             inception in 1924 to 2022.</p> <p>This work is presented as part of the &quot;RECORDS&quot; exhibition,
             currently on display at the Galleria in Trento.</p> <p>Explore curated <a href="${n}/stories" class="svelte-18m9an">stories</a> or
