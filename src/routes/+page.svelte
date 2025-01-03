@@ -11,7 +11,7 @@
         </p>
         <p>
             This work is presented as part of the "RECORDS" exhibition,
-            currently on display at the Galleria in Trento.
+            currently on display at Le Gallerie in Trento.
         </p>
         <p>
             Explore curated <a href="{base}/stories">stories</a> or
