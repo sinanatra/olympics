@@ -651,7 +651,6 @@
 
                 if (get(width) < 600) {
                     s.textSize(12);
-                    margin = 300;
                 } else if (get(width) > 3000) {
                     s.textSize(20);
                 } else {
