@@ -650,7 +650,7 @@
                 }
 
                 if (get(width) < 600) {
-                    s.textSize(12);
+                    s.textSize(6);
                 } else if (get(width) > 3000) {
                     s.textSize(20);
                 } else {
