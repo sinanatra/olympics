@@ -5,18 +5,19 @@
 <main data-sveltekit-reload>
     <div class="intro">
         <p>
-            A data storytelling installation visualizing all 22,560 athletes who
-            have ever participated in the Olympic Winter Games from its
-            inception in 1924 to 2022.
+            DATA STORYTELLING - 100 YEARS OF OLYMPIC HISTORY is an installation
+            visualizing all 22,560 athletes who have ever participated in the
+            Olympic Winter Games since their foundation in 1924.
         </p>
         <p>
-            This work is presented as part of the "RECORDS" exhibition,
-            currently on display at Le Gallerie in Trento.
+            It is currently on display at Le Gallerie di Piedicastello in Trento
+            as part of PERFORMANCE: a preparatory exhibition for the Milan
+            Cortina 2026 edition of the Winter Games.
         </p>
         <p>
-            Explore curated <a href="{base}/stories">stories</a> or
-            <a href="{base}/search">search</a>
-            for your own personal connections.
+            Here you can <a href="{base}/search">explore</a> both curated
+            <a href="{base}/stories">tales and stories</a>
+            that may be of personal interest.
         </p>
     </div>
 </main>

@@ -168,7 +168,7 @@
                     s.textSize(40);
                     margin = 1000;
                 } else {
-                    s.textSize(14);
+                    s.textSize(20);
                 }
 
                 s.text(

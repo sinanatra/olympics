@@ -312,8 +312,8 @@
             );
 
             if (nameFilter && activeFilters.length === 1) {
-                text = `${nameFilter.label} is shown moving across ${selectedCluster}`;
-                $caption = text;
+                text = `${nameFilter.label} is`;
+                $caption = `${text} ${colorMap[get(config).clusterBy].text}`;
             } else {
                 const details = activeFilters
                     .map((item) => {
@@ -325,8 +325,8 @@
                     })
                     .join(", ");
 
-                text = `${totalParticipants} ${pluralize(totalParticipants, "participant")} {${details}} ${pluralize(totalParticipants, "is")} seen moving across ${selectedCluster}`;
-                $caption = text;
+                text = `${totalParticipants} ${pluralize(totalParticipants, "participant")} {${details}} ${pluralize(totalParticipants, "is")}`;
+                $caption = `${text} ${colorMap[get(config).clusterBy].text}`;
             }
         } else {
             text = `${totalParticipants} ${pluralize(totalParticipants, "participant")} ${pluralize(totalParticipants, "is")}`;
