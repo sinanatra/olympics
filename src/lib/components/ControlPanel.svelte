@@ -312,13 +312,30 @@
             );
 
             if (nameFilter && activeFilters.length === 1) {
-                text = `${nameFilter.label} is`;
+                text = nameFilter.label
+                    .split(" ")
+                    .map(
+                        (word) =>
+                            word.charAt(0).toUpperCase() +
+                            word.slice(1).toLowerCase(),
+                    )
+                    .join(" ");
+
+                text = `${text} is`;
                 $caption = `${text} ${colorMap[get(config).clusterBy].text}`;
             } else {
                 const details = activeFilters
                     .map((item) => {
                         if (item.type === "name") {
-                            return item.label;
+                            let text = item.label
+                                .split(" ")
+                                .map(
+                                    (word) =>
+                                        word.charAt(0).toUpperCase() +
+                                        word.slice(1).toLowerCase(),
+                                )
+                                .join(" ");
+                            return text;
                         } else {
                             return `${item.type} → ${item.label}`;
                         }
