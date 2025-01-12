@@ -1,4 +1,4 @@
-import{s as l,e as c,c as p,m as h,o as i,i as d,n as a,f as m}from"../chunks/scheduler.C4GZKIzL.js";import{S as f,i as u}from"../chunks/index.DmHFZWEd.js";import{b as r}from"../chunks/paths.BnRCH9_1.js";function v(n){let e,s=`<div class="intro svelte-12ec5r0"><p>DATA STORYTELLING - 100 YEARS OF OLYMPIC HISTORY is an installation
+import{s as l,e as c,c as p,m as h,o as i,i as d,n as a,f as m}from"../chunks/scheduler.C4GZKIzL.js";import{S as f,i as u}from"../chunks/index.DmHFZWEd.js";import{b as r}from"../chunks/paths.CShxcjV_.js";function v(n){let e,s=`<div class="intro svelte-12ec5r0"><p>DATA STORYTELLING - 100 YEARS OF OLYMPIC HISTORY is an installation
             visualizing all 22,560 athletes who have ever participated in the
             Olympic Winter Games since their foundation in 1924.</p> <p>It is currently on display at Le Gallerie di Piedicastello in Trento
             as part of PERFORMANCE: a preparatory exhibition for the Milan
