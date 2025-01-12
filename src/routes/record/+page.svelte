@@ -8,7 +8,8 @@
         height,
         config,
         highlightedEntities,
-        syncRecording
+        syncRecording,
+        caption,
     } from "$lib/stores.js";
     import Sketch from "$lib/components/Sketch.svelte";
     import ControlPanel from "$lib/components/ControlPanel.svelte";
@@ -35,12 +36,16 @@
 
         width.set(3240);
         height.set(1080);
+
+        // snippet
+        // width.set(1000);
+        // height.set(1000);
     });
 
     function startRecording() {
         if (!isRecording) {
             isRecording = true;
-            $syncRecording = true
+            $syncRecording = true;
             console.log("Manual recording started");
         }
     }
@@ -48,7 +53,7 @@
     function stopRecording() {
         if (isRecording) {
             isRecording = false;
-            $syncRecording = false
+            $syncRecording = false;
             console.log("Manual recording stopped");
         }
     }

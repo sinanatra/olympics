@@ -166,7 +166,7 @@
                     margin = 300;
                 } else if (get(width) > 3000) {
                     s.textSize(40);
-                    margin = 1000;
+                    margin = 1200;
                 } else {
                     s.textSize(20);
                 }
@@ -621,6 +621,11 @@
         configData,
         randomizeClustersData,
     ) {
+        const stationaryCountsData = get(stationaryCounts);
+        const maxStationaryCount = Math.max(
+            ...Object.values(stationaryCountsData),
+        );
+
         s.fill(...(colorMap[configData.clusterBy]?.end || [0, 0, 20]));
 
         s.noStroke();
@@ -628,6 +633,8 @@
 
         clustersData.forEach(([clusterKey]) => {
             const pos = clusterPositionsData[clusterKey];
+            const itemCount = stationaryCountsData[clusterKey] || 0;
+
             if (pos) {
                 s.push();
                 if (randomizeClustersData) {
@@ -649,13 +656,25 @@
                     s.rotate(angle);
                 }
 
+                let baseFontSize = 6
+
                 if (get(width) < 600) {
                     s.textSize(6);
                 } else if (get(width) > 3000) {
                     s.textSize(20);
+                    baseFontSize = 20
                 } else {
                     s.textSize(12);
+                    baseFontSize = 12
+
                 }
+
+                s.textSize(baseFontSize);
+
+                // adapt it to the clusters?
+                // let fontSize = s.map(itemCount, 1, maxStationaryCount, baseFontSize * 0.875, baseFontSize * 1.5);
+                // s.textSize(fontSize);
+
 
                 const wrappedText =
                     clusterKey.length < 22
